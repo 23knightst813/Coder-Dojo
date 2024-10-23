@@ -1,0 +1,18 @@
+/* Initially hide the burger menu */
+.burger-fillings {
+    display: none;
+    position: relative;
+  }
+  
+  /* When the active class is applied, display the menu */
+  .burger-fillings.active {
+    display: block;
+  }
+  
+  /* Burger button styling (optional) */
+  .burger-button {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+  }
+  
