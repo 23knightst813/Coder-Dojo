@@ -1,11 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<nav>
+  <ul>
+    <li><a href="/edit">About</a></li>
+    <li><a href="/edit">Booking</a></li>
+    <li><a href="/edit">Login</a></li>
+  </ul>
+</nav>
 
-
-    <h1>Home</h1>
-    <p>Hello, {{email}}</p>
-    <p>Click on the links above to navigate the site.</p>
-
+<h1>Home</h1>
+<p>Hello, {{email}}</p>
+<p>Click on the links above to navigate the site.</p>
 
 {% endblock %}
