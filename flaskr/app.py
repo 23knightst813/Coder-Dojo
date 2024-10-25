@@ -72,13 +72,23 @@ def logout_route():
     logout()  
     return redirect(url_for("home"))
 
-@app.route('/menu')
-def menu():
-    return render_template('menu.html')
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
-@app.route('/tables')
-def tables():
-    return render_template('tables.html')
+@app.route("/admin")
+def admin():
+    if "email" not in session:
+        return redirect("/login")
+    elif session["email"] == "Admin":
+        return render_template("admin.html")
+    return redirect("/")
+
+@app.route("/booking")
+def booking():
+    return render_template("booking.html")
+
+
 
 if __name__ == '__main__':
     setup_db()

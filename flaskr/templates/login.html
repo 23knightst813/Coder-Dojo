@@ -1,18 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block content %}
 
-{% block content %}
+<nav>
+  <ul>
+    <li><a href="/about">About</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/login">Login</a></li>
+  </ul>
+</nav>
 
-    <h1>Login</h1>
-    <form action="/login" method="post">
-        <label for="email">Email:</label><br />
-        <input type="email" id="email" name="email" required /><br />
-        <label for="password">Password:</label><br />
-        <input type="password" id="password" name="password" required /><br />
-        <br/>
-        <br/>
-        <button type="submit">Login</button>
-        <br/>
-        <br/>
-        <button onclick="window.location.href = '/register';">Register</button>
-      </form>
+<h1>Login</h1>
+<form action="/login" method="post">
+  <label for="email">Email:</label><br />
+  <input type="email" id="email" name="email" required /><br />
+  <label for="password">Password:</label><br />
+  <input type="password" id="password" name="password" required /><br />
+  <br />
+  <br />
+  <button type="submit">Login</button>
+  <br />
+  <br />
+  <button onclick="window.location.href = '/register';">Register</button>
+</form>
 {% endblock %}

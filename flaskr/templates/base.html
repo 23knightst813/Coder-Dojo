@@ -6,10 +6,8 @@
     <link rel="stylesheet" type="text/css" href="static/style.css" />
   </head>
 
-  <!-- Burger button -->
   <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
 
-  <!-- Menu items -->
   <div id="burger-menu" class="burger-fillings">
     <ul>
       <li><a href="/">EDIT</a></li>
@@ -22,7 +20,6 @@
   <body>
     <main>
       {% block content %}
-      <!-- content from other pages -->
       {% endblock %}
     </main>
 
@@ -31,13 +28,10 @@
     </footer>
 
     <script>
-      // Get the burger button and the menu
       const burgerButton = document.getElementById('burger-button');
       const burgerMenu = document.getElementById('burger-menu');
 
-      // Add a click event listener to the burger button
       burgerButton.addEventListener('click', () => {
-        // Toggle the 'active' class on the burger menu
         burgerMenu.classList.toggle('active');
       });
     </script>
