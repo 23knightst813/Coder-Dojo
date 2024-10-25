@@ -49,6 +49,10 @@ def home():
 
     return response
 
+@app.route("/register")
+def register_route():
+    return render_template("register.html")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     print("Login start")
