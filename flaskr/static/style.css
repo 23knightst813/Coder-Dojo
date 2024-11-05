@@ -1,24 +1,45 @@
-/* Initially hide the burger menu */
 .burger-fillings {
   display: none;
-  position: relative;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background-color: #314747;
+  padding: 20px;
+  border-radius: 5px;
+  width: 200px;
+  font-size: 18px;
+  flex-direction: column;
+  align-items: center;
+  color: white; /* Changed font color to white */
 }
 
-/* When the active class is applied, display the menu */
 .burger-fillings.active {
-  display: block;
+  display: flex;
 }
 
-/* Burger button styling (optional) */
 .burger-button {
   cursor: pointer;
   width: 30px;
   height: 30px;
 }
 
+.burger-fillings ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.burger-fillings ul li {
+  margin: 15px 0;
+  text-align: center;
+}
 /* Set all text to Major Mono Display font */
 * {
   font-family: "Major Mono Display", serif;
   font-weight: 400;
   font-style: normal;
 }
+
+body {
+  background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95
