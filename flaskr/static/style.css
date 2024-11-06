@@ -1,22 +1,29 @@
 .burger-fillings {
   display: none;
   position: absolute;
-  top: 50px;
-  right: 10px;
+  top: 10px;
+  left: 10px; /* Changed from right to left */
   background-color: #314747;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10px; /* Increased border radius */
   width: 200px;
   font-size: 18px;
   flex-direction: column;
   align-items: center;
-  color: white; /* Changed font color to white */
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
 }
-
+.user-email {
+  font-family: 'Marck Script', cursive;
+}
 .burger-fillings.active {
   display: flex;
+  color: white;
 }
-
+/* style.css */
+.burger-fillings .user-email {
+  font-family: 'Marck Script', cursive;
+}
 .burger-button {
   cursor: pointer;
   width: 30px;
@@ -34,7 +41,15 @@
   margin: 15px 0;
   text-align: center;
 }
-/* Set all text to Major Mono Display font */
+
+.burger-fillings * {
+  color: white;
+}
+
+.burger-fillings a {
+  text-decoration: none;
+}
+
 * {
   font-family: "Major Mono Display", serif;
   font-weight: 400;
@@ -42,4 +57,5 @@
 }
 
 body {
-  background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95
+  background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95%, 1));
+}

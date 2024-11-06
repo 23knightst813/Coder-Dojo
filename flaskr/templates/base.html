@@ -4,9 +4,10 @@
     <meta charset="UTF-8" />
     <title>My Website</title>
     <link rel="stylesheet" type="text/css" href="static/style.css" />
+    <!-- base.html -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
   </head>
 
   <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
@@ -14,10 +15,19 @@
   <div id="burger-menu" class="burger-fillings">
     <img src="static/profile_icon.svg" alt="Profile Icon" style="width: 108px; height: 133px;">
     <ul>
+      <li>
+        <p class="user-email">
+          {% if 'email' in session %}
+            {{ session['email'] }}
+          {% else %}
+            Guest
+          {% endif %}
+        </p>
+      </li>
       <li><a href="/">EDIT</a></li>
-      <li><a href="/">Support</a></li>
-      <li><a href="/">My Sessions</a></li>
-      <li><a href="/logout">Logout</a></li>
+      <li><a href="/">support</a></li>
+      <li><a href="/">my sessions</a></li>
+      <li><a href="/logout">logout</a></li>
     </ul>
   </div>
   <body>
@@ -33,9 +43,20 @@
     <script>
       const burgerButton = document.getElementById('burger-button');
       const burgerMenu = document.getElementById('burger-menu');
-
-      burgerButton.addEventListener('click', () => {
+    
+      burgerButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents the click from bubbling up
         burgerMenu.classList.toggle('active');
+      });
+    
+      // Close burger menu when clicking outside
+      document.addEventListener('click', (event) => {
+        const isClickInsideMenu = burgerMenu.contains(event.target);
+        const isClickOnButton = burgerButton.contains(event.target);
+    
+        if (!isClickInsideMenu && !isClickOnButton) {
+          burgerMenu.classList.remove('active');
+        }
       });
     </script>
   </body>
