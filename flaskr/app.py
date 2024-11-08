@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, make_response, flash
-from db import setup_db, add_user,get_user_id_by_email, get_db_connection
+from db import setup_db, add_user,get_user_id_by_email, get_db_connection 
 from auth import sign_in, logout
 
 app = Flask(__name__)
@@ -121,6 +121,7 @@ def admin():
     elif session["email"] == "Admin":
         return render_template("admin.html")
     return redirect("/")
+
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
     if 'email' not in session:

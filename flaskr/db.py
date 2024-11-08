@@ -7,6 +7,7 @@ def get_db_connection():
     print("Connection to database established, connection object is: ", conn)
     return conn
 
+
 def get_user_id_by_email(email):
     conn = get_db_connection()
     cur = conn.cursor()
