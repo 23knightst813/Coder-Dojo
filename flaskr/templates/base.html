@@ -28,6 +28,9 @@
       <li><a href="/">support</a></li>
       <li><a href="/">my sessions</a></li>
       <li><a href="/logout">logout</a></li>
+    {% if session.get('is_admin') == True %}
+      <li><a href="/admin">Admin Homepage</a></li>
+    {% endif %}
     </ul>
   </div>
   <body>
@@ -45,11 +48,11 @@
       const burgerMenu = document.getElementById('burger-menu');
     
       burgerButton.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevents the click from bubbling up
+        event.stopPropagation();
         burgerMenu.classList.toggle('active');
       });
     
-      // Close burger menu when clicking outside
+
       document.addEventListener('click', (event) => {
         const isClickInsideMenu = burgerMenu.contains(event.target);
         const isClickOnButton = burgerButton.contains(event.target);

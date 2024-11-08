@@ -11,9 +11,13 @@ def setup_db():
     print("Setting up database")
     conn = get_db_connection()
     cur = conn.cursor()
-    queries = [
-        """
-        CREATE TABLE IF NOT EXISTS bookings (
+    
+    # Split queries into individual statements
+    statements = [
+        # Drop participants table if it exists
+        """DROP TABLE IF EXISTS participants""",
+        # Create bookings table
+        """CREATE TABLE IF NOT EXISTS bookings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             child_name VARCHAR(100) NOT NULL,
             age INT NOT NULL CHECK (age BETWEEN 5 AND 16),
@@ -23,23 +27,47 @@ def setup_db():
             booking_date DATE NOT NULL DEFAULT CURRENT_DATE,
             booking_time TIME NOT NULL DEFAULT CURRENT_TIME,
             overflow INT NOT NULL DEFAULT 0
-        );
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS Users (
+        )""",
+        # Create Users table
+        """CREATE TABLE IF NOT EXISTS Users (
             userID INTEGER PRIMARY KEY AUTOINCREMENT,
             Email TEXT NOT NULL UNIQUE,
             Password TEXT NOT NULL,
             First_Name TEXT,
             Last_Name TEXT,
             Creation_Date DATETIME DEFAULT CURRENT_TIMESTAMP
-        );
-        """
+        )""",
+        # Create activities table
+        """CREATE TABLE IF NOT EXISTS activities (
+            activity_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            activity_name VARCHAR(100) NOT NULL,
+            description TEXT
+        )""",
+        # Insert activities data
+        """INSERT OR IGNORE INTO activities (activity_name, description) VALUES
+            ('Scratch', 'Learn to code animations, stories, and games')""",
+        """INSERT OR IGNORE INTO activities (activity_name, description) VALUES
+            ('Unity', 'Create and explore 3D worlds')""",
+        """INSERT OR IGNORE INTO activities (activity_name, description) VALUES
+            ('Web Design', 'Build websites and apps with HTML, CSS, and JavaScript')""",
+        # Create participants table
+        """CREATE TABLE participants (
+            participant_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            name VARCHAR(50) NOT NULL,
+            age INTEGER NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES Users(userID)
+        )""",
+        # Insert test data into participants table
+        """INSERT INTO participants (user_id, name, age) VALUES
+            (1, 'John Doe', 25)"""
     ]
-
-    # Execute each query individually
-    for query in queries:
-        cur.execute(query)
+    
+    # Execute each statement individually
+    for statement in statements:
+        cur.execute(statement)
+    
     conn.commit()
     conn.close()
 

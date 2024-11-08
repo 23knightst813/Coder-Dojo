@@ -28,7 +28,19 @@ def register():
 
         # Create a session for the user
         session['email'] = email
-        return redirect("/")
+        if sign_in(email, password):
+            session["email"] = email
+            if email == "theo@theo.com":
+                session["is_admin"] = True  
+                print("Logged in as Admin")
+                redirect("/admin")
+            else:
+                session["is_admin"] = False
+                print("Logged in as Regular User")
+                return redirect("/")
+        else:
+            flash("Invalid email or password")
+            return redirect("/login")
 
     return render_template('register.html')
 
@@ -49,10 +61,25 @@ def home():
 
     return response
 
-@app.route("/register")
-def register_route():
-    return render_template("register.html")
 
+
+@app.route("/admin")
+def admin_route():
+    # Check if user is logged in
+    if "email" not in session:
+        flash("Please login first")
+        return redirect("/login")
+    
+    # Check admin status with get() to avoid KeyError
+    is_admin = session.get("is_admin", False)
+    
+    if is_admin:
+        return render_template("admin.html")
+    else:
+        flash("Access denied: Admin privileges required")
+        return redirect("/")
+
+# app.py
 @app.route("/login", methods=["GET", "POST"])
 def login():
     print("Login start")
@@ -63,13 +90,20 @@ def login():
 
         if sign_in(EMAIL, PASSWORD):
             session["email"] = EMAIL
-            print("Logged in")
+            if EMAIL == "theo@theo.com":
+                session["is_admin"] = True  
+                print("Logged in as Admin")
+                redirect("/admin")
+            else:
+                session["is_admin"] = False
+                print("Logged in as Regular User")
             return redirect("/")
         else:
             flash("Invalid email or password")
             return redirect("/login")
 
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout_route():
@@ -91,7 +125,6 @@ def admin():
 @app.route("/booking")
 def booking():
     return render_template("booking.html")
-
 
 
 if __name__ == '__main__':

@@ -59,3 +59,14 @@
 body {
   background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95%, 1));
 }
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+textarea,
+select {
+  font-family: Arial, sans-serif;
+  font-weight: normal;
+}
