@@ -14,20 +14,24 @@ def setup_db():
     
     # Split queries into individual statements
     statements = [
-        # Drop participants table if it exists
-        """DROP TABLE IF EXISTS participants""",
         # Create bookings table
-        """CREATE TABLE IF NOT EXISTS bookings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            child_name VARCHAR(100) NOT NULL,
-            age INT NOT NULL CHECK (age BETWEEN 5 AND 16),
-            activity_1 VARCHAR(100) NOT NULL,
-            activity_2 VARCHAR(100) NOT NULL,
-            activity_3 VARCHAR(100) NOT NULL,
-            booking_date DATE NOT NULL DEFAULT CURRENT_DATE,
-            booking_time TIME NOT NULL DEFAULT CURRENT_TIME,
-            overflow INT NOT NULL DEFAULT 0
-        )""",
+        """
+        CREATE TABLE IF NOT EXISTS Bookings (
+            booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            participant_id INTEGER NOT NULL,
+            activity1_id INTEGER,
+            activity2_id INTEGER,
+            activity3_id INTEGER,
+            day DATE NOT NULL,
+            time TIME NOT NULL,
+            activity VARCHAR(100) NOT NULL,
+            overflow_count INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (participant_id) REFERENCES Participants(participant_id),
+            FOREIGN KEY (activity1_id) REFERENCES Activities(activity_id),
+            FOREIGN KEY (activity2_id) REFERENCES Activities(activity_id),
+            FOREIGN KEY (activity3_id) REFERENCES Activities(activity_id)
+)""",
         # Create Users table
         """CREATE TABLE IF NOT EXISTS Users (
             userID INTEGER PRIMARY KEY AUTOINCREMENT,
