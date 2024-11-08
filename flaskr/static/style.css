@@ -20,6 +20,12 @@
   display: flex;
   color: white;
 }
+#newParticipantForm {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 10px;
+}
+
 /* style.css */
 .burger-fillings .user-email {
   font-family: 'Marck Script', cursive;

@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, make_response, flash
-from db import setup_db, add_user
+from db import setup_db, add_user,get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
 app = Flask(__name__)
@@ -121,11 +121,73 @@ def admin():
     elif session["email"] == "Admin":
         return render_template("admin.html")
     return redirect("/")
-
-@app.route("/booking")
+@app.route('/booking', methods=['GET', 'POST'])
 def booking():
-    return render_template("booking.html")
+    if 'email' not in session:
+        flash('Please log in to access the booking page.')
+        return redirect(url_for('login'))
 
+    user_id = get_user_id_by_email(session['email'])
+    if user_id is None:
+        flash('User not found.')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        participant_id = request.form.get('participant_id')
+        if participant_id == 'new':
+            name = request.form.get('new_participant_name')
+            age = request.form.get('new_participant_age')
+            cursor.execute(
+                "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
+                (user_id, name, age)
+            )
+            participant_id = cursor.lastrowid
+        else:
+            participant_id = int(participant_id)
+
+        activity_ids = [request.form.get(f'activity{i}') for i in range(1, 4)]
+
+        cursor.execute(
+            "INSERT INTO Bookings (participant_id, activity1_id, activity2_id, activity3_id) VALUES (?, ?, ?, ?)",
+            (
+                participant_id,
+                *activity_ids,
+            )
+        )
+        booking_id = cursor.lastrowid
+
+        cursor.execute("SELECT COUNT(*) FROM Bookings")
+        total_bookings = cursor.fetchone()[0]
+        overflow_count = 1 if total_bookings > 30 else 0
+
+        cursor.execute(
+            "UPDATE Bookings SET overflow_count = ? WHERE booking_id = ?",
+            (overflow_count, booking_id)
+        )
+
+        conn.commit()
+        conn.close()
+        flash('Booking successfully created.')
+        return redirect(url_for('home'))
+
+    else:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT participant_id, name FROM participants WHERE user_id = ?",
+            (user_id,)
+        )
+        participants = cursor.fetchall()
+
+        cursor.execute("SELECT activity_id, activity_name FROM activities")
+        activities = cursor.fetchall()
+
+        conn.close()
+        return render_template('booking.html', participants=participants, activities=activities)
 
 if __name__ == '__main__':
     setup_db()
