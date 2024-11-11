@@ -62,6 +62,49 @@
   font-style: normal;
 }
 
+
+
+.navbar-btn {
+  background-color: white; /* Light gray background */
+  border: none;
+  color: #000000; /* Black text */
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 20px; /* Rounded corners */
+  font-family: 'Major Mono Display', monospace; /* Font family */
+  letter-spacing: 5px; /* Spacing between letters */
+}
+
+.navbar-btn:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+}
+
+
+
+/* Flat Button Style */
+.btn {
+  background-color: #f0f0f0;
+  border: none;
+  color: #333;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn:hover {
+  background-color: #e0e0e0;
+}
+
 body {
   background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95%, 1));
 }

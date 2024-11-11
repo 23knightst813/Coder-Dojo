@@ -1,17 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
-
 <nav>
-    <ul>
-      <li><a href="/about">About</a></li>
-      <li><a href="/booking">Booking</a></li>
-      <li><a href="/login">Login</a></li>
-    </ul>
-  </nav>
+  <ul>
+    <li><a href="/about" class="navbar-btn">about</a></li>
+    <li><a href="/booking" class="navbar-btn">booking</a></li>
+    <li><a href="/login" class="navbar-btn">login</a></li>
+  </ul>
+</nav>
   
-  <h1>admin</h1>
-  <p>Hello, {{email}}</p>
-  <p>Click on the links above to navigate the site.</p>
+<h1>admin</h1>
+<p>hello, {{email}}</p>
+<p>click on the links above to navigate the site.</p>
   
-  {% endblock %}
-  
+{% endblock %}

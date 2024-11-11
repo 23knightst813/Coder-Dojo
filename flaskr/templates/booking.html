@@ -1,52 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Make a Booking</h1>
+
+<nav>
+    <ul>
+      <li><a href="/about" class="navbar-btn">about</a></li>
+      <li><a href="/" class="navbar-btn">home</a></li>
+      <li><a href="/login" class="navbar-btn">login</a></li>
+    </ul>
+  </nav>
+
+
+  
+
+<h1>make a booking</h1>
+
 <form method="post">
-    <label for="participant">Select Participant:</label>
+    <label for="participant">select participant:</label>
     <select name="participant_id" id="participant" onchange="toggleNewParticipantForm(this.value)">
-        <option value="" disabled selected>Select a participant</option>
+        <option value="" disabled selected>select a participant</option>
         {% for participant in participants %}
         <option value="{{ participant['participant_id'] }}">{{ participant['name'] }}</option>
         {% endfor %}
-        <option value="new">Create New Participant</option>
+        <option value="new">create new participant</option>
     </select>
 
     <div id="newParticipantForm" style="display: none;">
-        <h3>New Participant Information</h3>
-        <label for="new_participant_name">Name:</label>
+        <h3>new participant information</h3>
+        <label for="new_participant_name">name:</label>
         <input type="text" name="new_participant_name" id="new_participant_name" required>
 
-        <label for="new_participant_age">Age:</label>
+        <label for="new_participant_age">age:</label>
         <input type="number" name="new_participant_age" id="new_participant_age" required>
     </div>
 
-    <h3>Select Preferred Activities:</h3>
-    <label for="activity1">Activity 1:</label>
+    <h3>select preferred activities:</h3>
+    <label for="activity1">activity 1:</label>
     <select name="activity1" id="activity1" required>
-        <option value="" disabled selected>Select an activity</option>
+        <option value="" disabled selected>select an activity</option>
         {% for activity in activities %}
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
 
-    <label for="activity2">Activity 2:</label>
+    <label for="activity2">activity 2:</label>
     <select name="activity2" id="activity2" required>
-        <option value="" disabled selected>Select an activity</option>
+        <option value="" disabled selected>select an activity</option>
         {% for activity in activities %}
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
 
-    <label for="activity3">Activity 3:</label>
+    <label for="activity3">activity 3:</label>
     <select name="activity3" id="activity3" required>
-        <option value="" disabled selected>Select an activity</option>
+        <option value="" disabled selected>select an activity</option>
         {% for activity in activities %}
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
 
-    <button type="submit">Submit Booking</button>
+    <button type="submit" class="btn">submit booking</button>
 </form>
 
 <script>
