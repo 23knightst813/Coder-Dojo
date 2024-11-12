@@ -9,11 +9,13 @@
 </nav>
 
 
-  
 
-<h1>make a booking</h1>
+<head>
+    <h1>make a booking</h1>
+</head>
+
 <br>
-<form method="post">
+<form method="post" class="form-container">
     <label for="participant">select participant:</label>
     <select name="participant_id" id="participant" onchange="toggleNewParticipantForm(this.value)">
         <option value="" disabled selected>select a participant</option>
@@ -52,7 +54,7 @@
         {% endfor %}
     </select>
 
-    
+
     <br>
     <br>
     <label for="activity3">activity 3:</label>
@@ -69,13 +71,13 @@
 </form>
 
 <script>
-function toggleNewParticipantForm(value) {
-    const form = document.getElementById('newParticipantForm');
-    if (value === 'new') {
-        form.style.display = 'block';
-    } else {
-        form.style.display = 'none';
+    function toggleNewParticipantForm(value) {
+        const form = document.getElementById('newParticipantForm');
+        if (value === 'new') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
     }
-}
 </script>
 {% endblock %}
