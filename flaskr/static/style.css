@@ -64,9 +64,10 @@
 
 
 
+
 .navbar-btn {
   background-color: white; /* Light gray background */
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.17); 
   color: #000000; /* Black text */
   padding: 10px 20px;
   text-align: center;
@@ -80,16 +81,28 @@
   letter-spacing: 5px; /* Spacing between letters */
 }
 
+
+
+
 .navbar-btn:hover {
   background-color: #e0e0e0; /* Slightly darker gray on hover */
 }
 
+nav {
+  display: flex;
+  justify-content: center;
+
+}
+.navbar-btn {
+  /* Existing styles */
+  margin: 0 10px; /* Add horizontal spacing */
+}
 
 
 /* Flat Button Style */
 .btn {
-  background-color: #f0f0f0;
-  border: none;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.17); 
   color: #333;
   padding: 10px 20px;
   text-align: center;

@@ -3,18 +3,16 @@
 {% block content %}
 
 <nav>
-    <ul>
-      <li><a href="/about" class="navbar-btn">about</a></li>
-      <li><a href="/" class="navbar-btn">home</a></li>
-      <li><a href="/login" class="navbar-btn">login</a></li>
-    </ul>
-  </nav>
+    <a href="/about" class="navbar-btn">about</a>
+    <a href="/" class="navbar-btn">home</a>
+    <a href="/login" class="navbar-btn">login</a>
+</nav>
 
 
   
 
 <h1>make a booking</h1>
-
+<br>
 <form method="post">
     <label for="participant">select participant:</label>
     <select name="participant_id" id="participant" onchange="toggleNewParticipantForm(this.value)">
@@ -35,6 +33,8 @@
     </div>
 
     <h3>select preferred activities:</h3>
+    <br />
+    <br>
     <label for="activity1">activity 1:</label>
     <select name="activity1" id="activity1" required>
         <option value="" disabled selected>select an activity</option>
@@ -42,7 +42,8 @@
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
-
+    <br>
+    <br>
     <label for="activity2">activity 2:</label>
     <select name="activity2" id="activity2" required>
         <option value="" disabled selected>select an activity</option>
@@ -51,6 +52,9 @@
         {% endfor %}
     </select>
 
+    
+    <br>
+    <br>
     <label for="activity3">activity 3:</label>
     <select name="activity3" id="activity3" required>
         <option value="" disabled selected>select an activity</option>
@@ -58,7 +62,9 @@
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
-
+    <br>
+    <br>
+    <br>
     <button type="submit" class="btn">submit booking</button>
 </form>
 
