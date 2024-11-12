@@ -1,17 +1,16 @@
 .burger-fillings {
   display: none;
   position: absolute;
-  top: 10px;
-  left: 10px; /* Changed from right to left */
+
   background-color: #314747;
   padding: 20px;
-  border-radius: 10px; /* Increased border radius */
+  border-radius: 10px;
   width: 200px;
   font-size: 18px;
   flex-direction: column;
   align-items: center;
   color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .user-email {
   font-family: 'Marck Script', cursive;
@@ -62,10 +61,7 @@
   font-style: normal;
 }
 
-.form-container {
 
-
-}
 
 .navbar-btn {
   background-color: white; /* Light gray background */
@@ -124,7 +120,7 @@ body {
   background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95%, 1));
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="number"],
@@ -133,4 +129,53 @@ textarea,
 select {
   font-family: Arial, sans-serif;
   font-weight: normal;
+} */
+
+/* Center the main form */
+.form-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Style for the booking title */
+.form-container h2 {
+  font-size: 40px;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+}
+
+/* Centering the input fields */
+.form-container input[type="text"],
+.form-container input[type="password"],
+.form-container input[type="email"],
+.form-container select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+/* Add uniform padding to the labels */
+.form-container label {
+  font-size: 16px;
+  display: block;
+  margin-top: 15px;
+}
+
+
+/* Centering the booking title */
+.form-container h2 {
+  font-size: 40px;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  text-align: center; /* Center align title */
+}
+.head {
+  text-align: center;
+  width: 100%;
+  padding: 20px 0;
 }

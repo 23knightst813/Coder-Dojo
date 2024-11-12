@@ -1,37 +1,37 @@
 {% extends 'base.html' %} {% block content %}
 
 <nav>
-  <a href="/about" class="navbar-btn">about</a>
-  <a href="/" class="navbar-btn">home</a>
-  <a href="/login" class="navbar-btn">login</a>
+  <ul>
+    <li><a href="/about">About</a></li>
+    <li><a href="/">Home</a></li>
+    <li><a href="/login">Login</a></li>
+  </ul>
 </nav>
 
 <head>
-  <title>register</title>
+  <title>Register</title>
 </head>
 <body>
-  <div class="form-container">
-    <h2>register</h2>
-    <form action="/register" method="post">
-      <label for="email">email:</label><br />
-      <input type="email" id="email" name="email" required /><br />
-      <label for="password">password:</label><br />
-      <input type="password" id="password" name="password" required /><br />
-      <label for="first_name">first name:</label><br />
-      <input type="text" id="first_name" name="first_name" required /><br />
-      <label for="last_name">last name:</label><br />
-      <input type="text" id="last_name" name="last_name" required /><br />
-      <label for="password_confirm">confirm password:</label><br />
-      <input
-        type="password"
-        id="password_confirm"
-        name="password_confirm"
-        required
-      /><br />
-      <br />
-      <button type="submit">register</button>
-    </form>
-  </div>
+  <h2>Register</h2>
+  <form action="/register" method="post">
+    <label for="email">Email:</label><br />
+    <input type="email" id="email" name="email" required /><br />
+    <label for="password">Password:</label><br />
+    <input type="password" id="password" name="password" required /><br />
+    <label for="first_name">First Name:</label><br />
+    <input type="text" id="first_name" name="first_name" required /><br />
+    <label for="last_name">Last Name:</label><br />
+    <input type="text" id="last_name" name="last_name" required /><br />
+    <label for="password_confirm">Confirm Password:</label><br />
+    <input
+      type="password"
+      id="password_confirm"
+      name="password_confirm"
+      required
+    /><br />
+    <br />
+    <button type="submit">Register</button>
+  </form>
 </body>
 
 {% endblock %}
