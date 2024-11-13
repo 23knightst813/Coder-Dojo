@@ -8,11 +8,9 @@
     <a href="/login" class="navbar-btn">login</a>
 </nav>
 
-
-
-<head>
-    <h1 class="head">make a booking</h1>
-</head>
+<h1 class="head">make a booking</h1>
+<img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
+<img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
 
 <br>
 <form method="post" class="form-container">
@@ -25,17 +23,18 @@
         <option value="new">create new participant</option>
     </select>
 
-    <div id="newParticipantForm" style="display: none;">
+    <div id="newParticipantForm">
         <h3>new participant information</h3>
-        <label for="new_participant_name">name:</label>
+        <label for="new_participant_name">Name:</label>
         <input type="text" name="new_participant_name" id="new_participant_name" required>
-
-        <label for="new_participant_age">age:</label>
+        
+        <label for="new_participant_age">Age:</label>
         <input type="number" name="new_participant_age" id="new_participant_age" required>
-    </div>
+        
 
+    </div>
     <h3>select preferred activities:</h3>
-    <br />
+    <br/>
 
     <label for="activity1">activity 1:</label>
     <select name="activity1" id="activity1" required>
@@ -53,7 +52,6 @@
         <option value="{{ activity['activity_id'] }}">{{ activity['activity_name'] }}</option>
         {% endfor %}
     </select>
-
 
     <br>
     <br>
