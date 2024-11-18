@@ -9,31 +9,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
   </head>
-
-  <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
-
-  <div id="burger-menu" class="burger-fillings">
-    <img src="static/profile_icon.svg" alt="Profile Icon" style="width: 108px; height: 133px;">
-    <ul>
-      <li>
-        <p class="user-email">
-          {% if 'email' in session %}
-            {{ session['email'] }}
-          {% else %}
-            Guest
-          {% endif %}
-        </p>
-      </li>
-      <li><a href="/">EDIT</a></li>
-      <li><a href="/">support</a></li>
-      <li><a href="/">my sessions</a></li>
-      <li><a href="/logout">logout</a></li>
-    {% if session.get('is_admin') == True %}
-      <li><a href="/admin">Admin Homepage</a></li>
-    {% endif %}
-    </ul>
-  </div>
   <body>
+    <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
+
+    <div id="burger-menu" class="burger-fillings">
+      <img src="static/profile_icon.svg" alt="Profile Icon" style="width: 108px; height: 133px;">
+      <ul>
+        <li>
+          <p class="user-email">
+            {% if 'email' in session %}
+              {{ session['email'] }}
+            {% else %}
+              Guest
+            {% endif %}
+          </p>
+        </li>
+        <li><a href="/">EDIT</a></li>
+        <li><a href="/">support</a></li>
+        <li><a href="/">my sessions</a></li>
+        <li><a href="/logout">logout</a></li>
+      {% if session.get('is_admin') == True %}
+        <li><a href="/admin">Admin Homepage</a></li>
+      {% endif %}
+      </ul>
+    </div>
+
     <main>
       {% block content %}
       {% endblock %}
@@ -52,7 +52,6 @@
         burgerMenu.classList.toggle('active');
       });
     
-
       document.addEventListener('click', (event) => {
         const isClickInsideMenu = burgerMenu.contains(event.target);
         const isClickOnButton = burgerButton.contains(event.target);

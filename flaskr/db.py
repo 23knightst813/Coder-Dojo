@@ -44,6 +44,7 @@ def setup_db():
             activity2_id INTEGER,
             activity3_id INTEGER,
             overflow_count INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (participant_id) REFERENCES participants(participant_id),
             FOREIGN KEY (activity1_id) REFERENCES activities(activity_id),
             FOREIGN KEY (activity2_id) REFERENCES activities(activity_id),
@@ -79,3 +80,4 @@ def get_user_id_by_email(email):
 
 def get_db_connection():
     return sqlite3.connect('dojo.db')
+

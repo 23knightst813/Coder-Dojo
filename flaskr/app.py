@@ -120,13 +120,21 @@ def booking():
         else:
             participant_id = int(participant_id)
 
-        activity_ids = [request.form.get(f'activity{i}') for i in range(1, 4)]
+        activity_ids = []
+        for i in range(1, 4):
+            activity_id = request.form.get(f'activity{i}')
+            if activity_id:
+                activity_ids.append(activity_id)
+            else:
+                activity_ids.append(None)
 
         cursor.execute(
             "INSERT INTO Bookings (participant_id, activity1_id, activity2_id, activity3_id) VALUES (?, ?, ?, ?)",
             (
                 participant_id,
-                *activity_ids,
+                activity_ids[0],
+                activity_ids[1],
+                activity_ids[2],
             )
         )
         booking_id = cursor.lastrowid
@@ -160,6 +168,7 @@ def booking():
 
         conn.close()
         return render_template('booking.html', participants=participants, activities=activities)
+
 
 if __name__ == '__main__':
     setup_db()
