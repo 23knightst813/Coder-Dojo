@@ -8,12 +8,15 @@
     <a href="/login" class="navbar-btn">login</a>
 </nav>
 
-<h1 class="head">make a booking</h1>
-<img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
-<img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
+<div class="head">
+    <h1>make a booking</h1>
+    <div class="head-text"></div>
+        <p>saturday</p>
+        <p>10:00 - 18:00</p>
+    </div>
+</div>
 
-<br>
-<form method="post" class="form-container">
+<form method="post" class="form-container" >
     <!-- Participant Dropdown -->
     <label for="participant">select participant:</label>
     <select name="participant_id" id="participant" onchange="toggleNewParticipantForm(this.value)">
@@ -29,14 +32,14 @@
         <h3>new participant information</h3>
         <label for="new_participant_name">Name:</label>
         <input type="text" name="new_participant_name" id="new_participant_name" required>
-        
+
         <label for="new_participant_age">Age:</label>
         <input type="number" name="new_participant_age" id="new_participant_age" required>
     </div>
 
     <!-- Activity Dropdowns -->
     <h3>select preferred activities:</h3>
-    <br/>
+    <br />
 
     <label for="activity1">activity 1:</label>
     <select name="activity1" id="activity1" required>
@@ -73,10 +76,17 @@
 <script>
     function toggleNewParticipantForm(value) {
         const form = document.getElementById('newParticipantForm');
+        const nameInput = document.getElementById('new_participant_name');
+        const ageInput = document.getElementById('new_participant_age');
+
         if (value === 'new') {
             form.style.display = 'block';
+            nameInput.required = true;
+            ageInput.required = true;
         } else {
             form.style.display = 'none';
+            nameInput.required = false;
+            ageInput.required = false;
         }
     }
 </script>

@@ -30,16 +30,16 @@ def register():
         password_confirm = request.form['password_confirm']
 
         if password != password_confirm:
-            flash("Passwords do not match")
+            flash("Passwords do not match", "error")
             return redirect("/register")
 
         if not add_user(email, password, first_name, last_name):
-            flash("Account already exists")
+            flash("Account already exists", "error")
             return redirect("/register")
 
+        flash("Registration successful!", "success")
         return sign_in(email, password)
-
-    return render_template('register.html')
+    return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -62,73 +62,118 @@ def about():
 @app.route("/admin")
 def admin():
     if "email" not in session:
+        flash("Please login to access admin panel", "warning")
         return redirect("/login")
     elif session.get("is_admin"):
+        flash("Welcome to admin panel", "success")
         return render_template("admin.html")
-    flash("Access denied: Admin privileges required")
+    flash("Access denied: Admin privileges required", "error")
     return redirect("/")
 
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
     if 'email' not in session:
-        flash('Please log in to access the booking page.')
+        flash('Please log in to access the booking page.', 'warning')
         return redirect(url_for('login'))
 
     user_id = get_user_id_by_email(session['email'])
     if user_id is None:
-        flash('User not found.')
+        flash('User not found.', 'error')
         return redirect(url_for('login'))
 
     if request.method == 'POST':
         conn = get_db_connection()
         cursor = conn.cursor()
-
-        participant_id = request.form.get('participant_id')
-        if participant_id == 'new':
-            name = request.form.get('new_participant_name')
-            age = request.form.get('new_participant_age')
-            cursor.execute(
-                "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
-                (user_id, name, age)
-            )
-            participant_id = cursor.lastrowid
-        else:
-            participant_id = int(participant_id)
-
-        activity_ids = []
-        for i in range(1, 4):
-            activity_id = request.form.get(f'activity{i}')
-            if activity_id:
-                activity_ids.append(activity_id)
+        
+        try:
+            participant_id = request.form.get('participant_id')
+            
+            # Validate participant selection
+            if not participant_id:
+                flash('Please select a participant or create a new one.', 'warning')
+                return redirect(url_for('booking'))
+            
+            # Handle new participant creation
+            if participant_id == 'new':
+                name = request.form.get('new_participant_name')
+                age = request.form.get('new_participant_age')
+                
+                # Validate new participant data
+                if not name or not age:
+                    flash('Please provide both name and age for new participant.', 'warning')
+                    return redirect(url_for('booking'))
+                
+                try:
+                    age = int(age)
+                    if age <= 0:
+                        raise ValueError
+                except ValueError:
+                    flash('Please provide a valid age.', 'error')
+                    return redirect(url_for('booking'))
+                
+                cursor.execute(
+                    "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
+                    (user_id, name, age)
+                )
+                participant_id = cursor.lastrowid
             else:
-                activity_ids.append(None)
+                # Verify participant belongs to user
+                cursor.execute(
+                    "SELECT COUNT(*) FROM participants WHERE participant_id = ? AND user_id = ?",
+                    (participant_id, user_id)
+                )
+                if cursor.fetchone()[0] == 0:
+                    flash('Invalid participant selected.', 'error')
+                    return redirect(url_for('booking'))
 
-        cursor.execute(
-            "INSERT INTO Bookings (participant_id, activity1_id, activity2_id, activity3_id) VALUES (?, ?, ?, ?)",
-            (
-                participant_id,
-                activity_ids[0],
-                activity_ids[1],
-                activity_ids[2],
+            # Get activity selections
+            activities = []
+            for i in range(1, 4):
+                activity_id = request.form.get(f'activity{i}')
+                if not activity_id:
+                    flash(f'Please select activity {i}', 'warning')
+                    return redirect(url_for('booking'))
+                activities.append(activity_id)
+            
+            # Verify activities exist
+            for activity_id in activities:
+                cursor.execute("SELECT COUNT(*) FROM activities WHERE activity_id = ?", (activity_id,))
+                if cursor.fetchone()[0] == 0:
+                    flash('Invalid activity selected.', 'error')
+                    return redirect(url_for('booking'))
+
+            # Create the booking
+            cursor.execute(
+                """INSERT INTO Bookings 
+                   (participant_id, activity1_id, activity2_id, activity3_id) 
+                   VALUES (?, ?, ?, ?)""",
+                (participant_id, activities[0], activities[1], activities[2])
             )
-        )
-        booking_id = cursor.lastrowid
+            booking_id = cursor.lastrowid
 
-        cursor.execute("SELECT COUNT(*) FROM Bookings")
-        total_bookings = cursor.fetchone()[0]
-        overflow_count = 1 if total_bookings > 30 else 0
+            # Handle overflow logic
+            cursor.execute("SELECT COUNT(*) FROM Bookings")
+            total_bookings = cursor.fetchone()[0]
+            overflow_count = 1 if total_bookings > 30 else 0
 
-        cursor.execute(
-            "UPDATE Bookings SET overflow_count = ? WHERE booking_id = ?",
-            (overflow_count, booking_id)
-        )
+            cursor.execute(
+                "UPDATE Bookings SET overflow_count = ? WHERE booking_id = ?",
+                (overflow_count, booking_id)
+            )
 
-        conn.commit()
-        conn.close()
-        flash('Booking successfully created.')
-        return redirect(url_for('home'))
+            conn.commit()
+            flash('Booking successfully created!', 'success')
+            return redirect(url_for('home'))
 
-    else:
+        except Exception as e:
+            conn.rollback()
+            flash(f'An error occurred while creating the booking: {str(e)}', 'error')
+            return redirect(url_for('booking'))
+        
+        finally:
+            conn.close()
+
+    else:  # GET request
         conn = get_db_connection()
         cursor = conn.cursor()
 

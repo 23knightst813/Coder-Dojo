@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
   </head>
   <body>
+
+    <img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
+    <img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
+
     <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
 
     <div id="burger-menu" class="burger-fillings">
@@ -33,6 +37,17 @@
       {% endif %}
       </ul>
     </div>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
     <main>
       {% block content %}

@@ -30,6 +30,7 @@
   cursor: pointer;
   width: 30px;
   height: 30px;
+  
 }
 .burger-fillings ul {
   list-style: none;
@@ -101,6 +102,7 @@ body {
   margin: auto;
   padding: 20px;
   text-align: center;
+  margin-top: -30px;
 }
 .form-container h2 {
   font-size: 40px;
@@ -187,4 +189,56 @@ body {
 #newParticipantForm .btn {
   margin-top: 20px;
   width: auto;
+}
+
+.flashes {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 300px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flashes li {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border-left: 5px solid #56CCF2; /* Default highlight */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 15px 20px;
+  margin: 10px 0;
+  font-family: 'Major Mono Display', monospace;
+  font-size: 14px;
+  text-align: left;
+  animation: slide-in-out 4s ease-in-out forwards;
+}
+
+.flashes li.success {
+  border-color: #6FCF97; /* Green for success */
+}
+
+.flashes li.error {
+  border-color: #EB5757; /* Red for error */
+}
+
+.flashes li.info {
+  border-color: #2D9CDB; /* Blue for info */
+}
+
+@keyframes slide-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
