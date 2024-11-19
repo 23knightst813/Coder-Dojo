@@ -1,12 +1,24 @@
 # app.py
-from flask import Flask, redirect, render_template, request, session, url_for, make_response, flash
+from flask import Flask, redirect, render_template, request, session, url_for, flash
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
-from auth import sign_in, logout, admin_sign_in
+from auth import sign_in, logout
 
 app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'
 
 
+@app.route("/")
+def home():
+    email = "Guest"
+    if "email" not in session:
+        response = make_response(render_template("home.html", email=email))
+    else:
+        email = session["email"].split('@')[0]
+        response = make_response(render_template("home.html", email=email))
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+
+    return response
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -25,8 +37,7 @@ def register():
             flash("Account already exists")
             return redirect("/register")
 
-        session['email'] = email
-        return admin_sign_in(email, password)
+        return sign_in(email, password)
 
     return render_template('register.html')
 
@@ -35,7 +46,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        return admin_sign_in(email, password)
+        return sign_in(email, password)
 
     return render_template("login.html")
 
