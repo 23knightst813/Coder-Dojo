@@ -242,3 +242,21 @@ body {
     transform: translateY(-20px);
   }
 }
+
+.main-title {
+  text-align: center;
+  font-size: 128px;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  color: #737373;
+}
+
+.main-body {
+  text-align: center;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+}
