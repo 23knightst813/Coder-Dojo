@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, redirect, render_template, request, session, url_for, flash
+from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
