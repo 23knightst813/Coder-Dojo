@@ -136,23 +136,23 @@ body {
   padding: 20px 0;
 }
 
-.bars-left {
+.bars-left, .bars-right {
   position: fixed;
-  left: 0;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.bars-left {
+  left: 0;
   padding: 125px;
 }
 
 .bars-right {
-  position: fixed;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
   padding: 120px;
 }
 

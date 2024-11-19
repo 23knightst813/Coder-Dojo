@@ -14,3 +14,16 @@ def sign_in(email, password):
 
 def logout():
     session.clear()
+
+def admin_sign_in(email, password):
+    if sign_in(email, password):
+        session["email"] = email
+        if email == "theo@theo.com" or email == "a@a.co.fortei":
+            session["is_admin"] = True  
+            return redirect("/admin")
+        else:
+            session["is_admin"] = False
+            return redirect("/")
+    else:
+        flash("Invalid email or password")
+        return redirect("/login")

@@ -1,10 +1,12 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, make_response, flash
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
-from auth import sign_in, logout
+from auth import sign_in, logout, admin_sign_in
 
 app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'
+
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -24,54 +26,16 @@ def register():
             return redirect("/register")
 
         session['email'] = email
-        if sign_in(email, password):
-            session["email"] = email
-            if email == "theo@theo.com":
-                session["is_admin"] = True  
-                return redirect("/admin")
-            else:
-                session["is_admin"] = False
-                return redirect("/")
-        else:
-            flash("Invalid email or password")
-            return redirect("/login")
+        return admin_sign_in(email, password)
 
     return render_template('register.html')
 
-@app.route("/")
-def home():
-    email = "Guest"
-    if "email" not in session:
-        response = make_response(render_template("home.html", email=email))
-    else:
-        email = session["email"].split('@')[0]
-        response = make_response(render_template("home.html", email=email))
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Pragma"] = "no-cache"
-
-    return response
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    print("Login start")
     if request.method == "POST":
-        print("Post")
-        EMAIL = request.form["email"]
-        PASSWORD = request.form["password"]
-
-        if sign_in(EMAIL, PASSWORD):
-            session["email"] = EMAIL
-            if EMAIL == "theo@theo.com":
-                session["is_admin"] = True  
-                print("Logged in as Admin")
-                return redirect("/admin")
-            else:
-                session["is_admin"] = False
-                print("Logged in as Regular User")
-                return redirect("/")
-        else:
-            flash("Invalid email or password")
-            return redirect("/login")
+        email = request.form["email"]
+        password = request.form["password"]
+        return admin_sign_in(email, password)
 
     return render_template("login.html")
 
