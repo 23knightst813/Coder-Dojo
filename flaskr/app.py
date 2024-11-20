@@ -189,6 +189,71 @@ def booking():
         conn.close()
         return render_template('booking.html', participants=participants, activities=activities)
 
+@app.route('/edit_profile', methods=['GET', 'POST'])
+def edit_profile():
+    if 'email' not in session:
+        flash('Please log in to access the profile page.', 'warning')
+        return redirect(url_for('login'))
+
+    user_email = session['email']
+    user_id = get_user_id_by_email(user_email)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        # Update user information
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        password = request.form.get('password')
+
+        cursor.execute('''
+            UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?
+        ''', (first_name, last_name, password, user_id))
+
+        # Update existing participants
+        participant_ids = request.form.getlist('participant_id')
+        participant_names = request.form.getlist('participant_name')
+        participant_ages = request.form.getlist('participant_age')
+
+        for p_id, p_name, p_age in zip(participant_ids, participant_names, participant_ages):
+            cursor.execute('''
+                UPDATE participants SET name = ?, age = ? WHERE participant_id = ? AND user_id = ?
+            ''', (p_name, p_age, p_id, user_id))
+
+        # Add new participants
+        new_participant_names = request.form.getlist('new_participant_name')
+        new_participant_ages = request.form.getlist('new_participant_age')
+
+        for name, age in zip(new_participant_names, new_participant_ages):
+            if name.strip() and age.strip():
+                cursor.execute('''
+                    INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)
+                ''', (user_id, name, age))
+
+        conn.commit()
+        conn.close()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('edit_profile'))
+
+    else:
+        # Retrieve user information
+        cursor.execute('SELECT first_name, last_name, password FROM users WHERE user_id = ?', (user_id,))
+        user_info = cursor.fetchone()
+
+        # Retrieve participant information
+        cursor.execute('SELECT participant_id, name, age FROM participants WHERE user_id = ?', (user_id,))
+        participant_info = cursor.fetchall()
+
+        conn.close()
+        return render_template('edit_profile.html', user_info=user_info, participant_info=participant_info)
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    flash('Page not found', 'error')
+    return redirect("/")    
+
 
 if __name__ == '__main__':
     setup_db()

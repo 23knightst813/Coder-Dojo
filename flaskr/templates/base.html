@@ -14,7 +14,7 @@
     <img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
     <img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
 
-    <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" />
+    <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" />
 
     <div id="burger-menu" class="burger-fillings">
       <img src="static/profile_icon.svg" alt="Profile Icon" style="width: 108px; height: 133px;">
@@ -28,7 +28,7 @@
             {% endif %}
           </p>
         </li>
-        <li><a href="/">EDIT</a></li>
+        <li><a href="/edit_profile">EDIT</a></li>
         <li><a href="/">support</a></li>
         <li><a href="/">my sessions</a></li>
         <li><a href="/logout">logout</a></li>
