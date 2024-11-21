@@ -16,6 +16,6 @@ INSERT INTO activities (activity_name) VALUES
 ('Robotics');
 
 -- Insert test data into the bookings table
-INSERT INTO bookings (participant_id, activity1_id, activity2_id, activity3_id) VALUES
-(1, 1, 2, 3),
+INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activity3_id) VALUES
+(1 , 2, 1, 2, 3),
 (2, 2, NULL, NULL);

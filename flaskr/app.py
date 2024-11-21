@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
-from db import setup_db, add_user, get_user_id_by_email, get_db_connection
+from db import setup_db, add_user, get_user_id_by_email, get_db_connection, get_user_sessions
 from auth import sign_in, logout
 
 app = Flask(__name__)
@@ -141,12 +141,13 @@ def booking():
                     flash('Invalid activity selected.', 'error')
                     return redirect(url_for('booking'))
 
-            # Create the booking
+            # Get user ID and create the booking
+            user_id = get_user_id_by_email(session['email'])
             cursor.execute(
                 """INSERT INTO Bookings 
-                   (participant_id, activity1_id, activity2_id, activity3_id) 
-                   VALUES (?, ?, ?, ?)""",
-                (participant_id, activities[0], activities[1], activities[2])
+                   (user_id, participant_id, activity1_id, activity2_id, activity3_id) 
+                   VALUES (?, ?, ?, ?, ?)""",
+                (user_id, participant_id, activities[0], activities[1], activities[2])
             )
             booking_id = cursor.lastrowid
 
@@ -245,6 +246,16 @@ def edit_profile():
 
         conn.close()
         return render_template('edit_profile.html', user_info=user_info, participant_info=participant_info)
+
+@app.route('/sessions')
+def sessions():
+    if 'email' not in session:
+        flash('Please log in to access the profile page.', 'warning')
+        return redirect(url_for('login'))
+    
+    user_id = get_user_id_by_email(session['email'])
+    booked_sessions = get_user_sessions(user_id)
+    return render_template('sessions.html', sessions=booked_sessions)
 
 
 @app.errorhandler(404)

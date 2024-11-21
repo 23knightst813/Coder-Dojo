@@ -282,7 +282,7 @@ iframe {
 }
 
 .text-box {
-  background-color: #B5D0D0; /* Light background */
+  background-color: #B5D0D0;
   padding: 20px;
   margin: 30px auto;
   border-radius: 10px;
@@ -290,13 +290,34 @@ iframe {
   font-family: 'Major Mono Display', monospace;
   font-size: 16px;
   max-width: 80%;
-  height: 14vh; /* Stretch down to fill more of the page */
-
+  height: 14vh; 
 }
-
-
 
 .text-box p {
   margin: 0;
   line-height: 1.6;
+}
+
+.session-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px;
+}
+
+.session-item {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.session-item h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.session-item p {
+  margin: 5px 0;
+  font-size: 16px;
 }

@@ -39,12 +39,15 @@ def setup_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Bookings (
             booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
             participant_id INTEGER NOT NULL,
             activity1_id INTEGER,
             activity2_id INTEGER,
             activity3_id INTEGER,
             overflow_count INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            
+            FOREIGN KEY (user_id) REFERENCES users(user_id),
             FOREIGN KEY (participant_id) REFERENCES participants(participant_id),
             FOREIGN KEY (activity1_id) REFERENCES activities(activity_id),
             FOREIGN KEY (activity2_id) REFERENCES activities(activity_id),
@@ -69,6 +72,15 @@ def add_user(email, password, first_name, last_name):
         return False
     finally:
         conn.close()
+
+def get_user_sessions(user_id):
+    conn = get_db_connection()
+    sessions = conn.execute(
+        'SELECT * FROM bookings WHERE user_id = ?',
+        (user_id,)
+    ).fetchall()
+    conn.close()
+    return sessions
 
 def get_user_id_by_email(email):
     conn = sqlite3.connect('dojo.db')

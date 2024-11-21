@@ -22,3 +22,4 @@ def sign_in(email, password):
 
 def logout():
     session.clear()
+

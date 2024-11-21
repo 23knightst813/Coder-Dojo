@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
     <title>My Website</title>
     <link rel="stylesheet" type="text/css" href="static/style.css" />
     <!-- base.html -->
@@ -30,7 +31,7 @@
         </li>
         <li><a href="/edit_profile">EDIT</a></li>
         <li><a href="/">support</a></li>
-        <li><a href="/">my sessions</a></li>
+        <li><a href="/sessions">my sessions</a></li>
         <li><a href="/logout">logout</a></li>
       {% if session.get('is_admin') == True %}
         <li><a href="/admin">Admin Homepage</a></li>

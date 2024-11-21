@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav>
+  <a href="/about" class="navbar-btn">about</a>
+  <a href="/booking" class="navbar-btn">booking</a>
+  <a href="/logout" class="navbar-btn">logout</a>
+</nav>
+
+<h1 class="head">My Sessions</h1>
+
+{% if sessions %}
+<ul class="session-list">
+  {% for session in sessions %}
+  <li class="session-item">
+    <h2>{{ session.activity_name }}</h2>
+    <p>Date: {{ session.date }}</p>
+    <p>Time: {{ session.time }}</p>
+    <p>Location: {{ session.location }}</p>
+    <!-- Add more details as needed -->
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>You have no booked sessions.</p>
+{% endif %}
+
+{% endblock %}
