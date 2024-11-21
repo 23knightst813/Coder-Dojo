@@ -6,7 +6,6 @@ from auth import sign_in, logout
 app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'
 
-
 @app.route("/")
 def home():
     email = "Guest"
@@ -246,7 +245,6 @@ def edit_profile():
 
         conn.close()
         return render_template('edit_profile.html', user_info=user_info, participant_info=participant_info)
-
 
 
 @app.errorhandler(404)

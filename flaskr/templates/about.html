@@ -1,16 +1,30 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+
 
 <nav>
-  <a class="navbar-btn" href="/about">about</a>
-  <a class="navbar-btn" href="/">home</a>
-  <a class="navbar-btn" href="/login">login</a>
+  <a href="/about" class="navbar-btn">about</a>
+  <a href="/" class="navbar-btn">home</a>
+  <a href="/login" class="navbar-btn">login</a>
 </nav>
 
+<h1 class="head">about</h1>
 
+<div class="map-container">
+  <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2445.149080396032!2d0.11876907713070634!3d52.20433827198013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8710c07899a87%3A0xd98d392d991f967f!2sRaspberry%20Pi!5e0!3m2!1sen!2suk!4v1732180650672!5m2!1sen!2suk" 
+      width="600" 
+      height="450" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
 
+<div class="text-box">
+  <p>Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder Text Holder</p>
+</div>
 
-<h1>about</h1>
-<p>hello, {{email}}</p>
-<p>click on the links above to navigate the site.</p>
-
-{% endblock %}
+{% endblock %}</div>
