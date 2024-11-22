@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
-from db import setup_db, add_user, get_user_id_by_email, get_db_connection, get_user_sessions
+from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
 app = Flask(__name__)
@@ -57,6 +57,32 @@ def logout_route():
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+@app.route("/support", methods=["GET", "POST"])
+def support():
+    if request.method == "POST":
+        subject = request.form["subject"]
+        message = request.form["message"]
+        
+        if "email" in session:
+            user_id = get_user_id_by_email(session["email"])
+        else:
+            user_id = 0  # Use 0 for anonymous users
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO support (user_id, support) VALUES (?, ?)",
+            (user_id, f"{subject}: {message}")
+        )
+        conn.commit()
+        conn.close()
+
+        flash("Your support request has been submitted successfully!", "success")
+        return redirect(url_for("support"))
+
+    return render_template("support.html")
+
 
 @app.route("/admin")
 def admin():
@@ -163,7 +189,7 @@ def booking():
 
             conn.commit()
             flash('Booking successfully created!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('sessions'))
 
         except Exception as e:
             conn.rollback()
@@ -250,12 +276,48 @@ def edit_profile():
 @app.route('/sessions')
 def sessions():
     if 'email' not in session:
-        flash('Please log in to access the profile page.', 'warning')
+        flash('Please log in to access your sessions.', 'warning')
         return redirect(url_for('login'))
     
     user_id = get_user_id_by_email(session['email'])
-    booked_sessions = get_user_sessions(user_id)
-    return render_template('sessions.html', sessions=booked_sessions)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Fetch bookings with related participant and activity info
+    cursor.execute('''
+        SELECT 
+            b.booking_id,
+            p.name AS participant_name,
+            a1.activity_name AS activity1_name,
+            a2.activity_name AS activity2_name,
+            a3.activity_name AS activity3_name,
+            b.overflow_count,
+            b.created_at
+        FROM bookings b
+        JOIN participants p ON b.participant_id = p.participant_id
+        LEFT JOIN activities a1 ON b.activity1_id = a1.activity_id
+        LEFT JOIN activities a2 ON b.activity2_id = a2.activity_id
+        LEFT JOIN activities a3 ON b.activity3_id = a3.activity_id
+        WHERE b.user_id = ?
+        ORDER BY b.booking_id ASC
+    ''', (user_id,))
+    
+    # Convert tuple results to dictionaries
+    bookings = []
+    for row in cursor.fetchall():
+        booking = {
+            'booking_id': row[0],
+            'participant_name': row[1],
+            'activity1_name': row[2],
+            'activity2_name': row[3],
+            'activity3_name': row[4],
+            'overflow_count': row[5],
+            'created_at': row[6]
+        }
+        bookings.append(booking)
+    
+    conn.close()
+    return render_template('sessions.html', bookings=bookings)
 
 
 @app.errorhandler(404)

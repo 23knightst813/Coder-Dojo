@@ -1,3 +1,4 @@
+<!-- Modify sessions.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -7,22 +8,40 @@
   <a href="/logout" class="navbar-btn">logout</a>
 </nav>
 
-<h1 class="head">My Sessions</h1>
+<h1 class="head">my sessions</h1>
 
-{% if sessions %}
-<ul class="session-list">
-  {% for session in sessions %}
-  <li class="session-item">
-    <h2>{{ session.activity_name }}</h2>
-    <p>Date: {{ session.date }}</p>
-    <p>Time: {{ session.time }}</p>
-    <p>Location: {{ session.location }}</p>
-    <!-- Add more details as needed -->
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>You have no booked sessions.</p>
-{% endif %}
-
+<div class="session-container">
+  {% if bookings %}
+    <div class="session-list">
+      {% for booking in bookings %}
+        <div class="session-item">
+          <h2>booking id: {{ booking['booking_id'] }}</h2>
+          <div class="session-info">
+            <p><strong>participant:</strong> {{ booking['participant_name'] }}</p>
+            <p><strong>activities:</strong></p>
+            <ul class="activities-list">
+              {% if booking['activity1_name'] %}
+                <li>{{ booking['activity1_name'] }}</li>
+              {% endif %}
+              {% if booking['activity2_name'] %}
+                <li>{{ booking['activity2_name'] }}</li>
+              {% endif %}
+              {% if booking['activity3_name'] %}
+                <li>{{ booking['activity3_name'] }}</li>
+              {% endif %}
+            </ul>
+            <p><strong>date:</strong> {{ booking['created_at'] }}</p>
+            {% if booking['overflow_count'] > 0 %}
+              <div class="overflow-notice">
+                <p>this session is on overflow. you will be notified if a spot becomes available.</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>you have no booked sessions.</p>
+  {% endif %}
+</div>
 {% endblock %}

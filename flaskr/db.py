@@ -54,7 +54,15 @@ def setup_db():
             FOREIGN KEY (activity3_id) REFERENCES activities(activity_id)
         )
     ''')
-    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS support (
+            support_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            support TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        )
+    ''')
     conn.commit()
     conn.close()
 
@@ -73,14 +81,6 @@ def add_user(email, password, first_name, last_name):
     finally:
         conn.close()
 
-def get_user_sessions(user_id):
-    conn = get_db_connection()
-    sessions = conn.execute(
-        'SELECT * FROM bookings WHERE user_id = ?',
-        (user_id,)
-    ).fetchall()
-    conn.close()
-    return sessions
 
 def get_user_id_by_email(email):
     conn = sqlite3.connect('dojo.db')

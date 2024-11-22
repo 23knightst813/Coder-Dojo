@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav>
+    <a href="/about" class="navbar-btn">About</a>
+    <a href="/" class="navbar-btn">Home</a>
+    <a href="/login" class="navbar-btn">Login</a>
+</nav>
+
+<h1 class="head">support</h1>
+
+<div class="form-container">
+    <h2>contact us</h2>
+    <form method="post" class="support-form">
+        <label for="subject">subject:</label>
+        <input type="text" id="subject" name="subject" required>
+
+        <label for="message">message:</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+
+        <button type="submit" class="btn">send Message</button>
+    </form>
+
+    <div class="text-box">
+        <h3>need help?</h3>
+        <p>email: support@codeclub.com</p>
+        <p>phone: +011-44-131-1234567
+        </p>
+        <p>hours: Mon-Fri 9:00-17:00</p>
+    </div>
+</div>
+
+
+{% endblock %}
