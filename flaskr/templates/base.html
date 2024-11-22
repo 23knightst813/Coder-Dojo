@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
     <title>My Website</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
     <!-- base.html -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
-  </head>
+</head>
   <body>
 
     <img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
     <img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
 
-    <img src="static/Hamburgur.svg" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" />
+    <img src="{{ url_for('static', filename='Hamburgur.svg') }}" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" />
 
     <div id="burger-menu" class="burger-fillings">
-      <img src="static/profile_icon.svg" alt="Profile Icon" style="width: 108px; height: 133px;">
+      <img src="{{ url_for('static', filename='profile_icon.svg') }}" alt="Profile Icon" style="width: 108px; height: 133px;">
       <ul>
         <li>
           <p class="user-email">
@@ -33,9 +33,9 @@
         <li><a href="/support">support</a></li>
         <li><a href="/sessions">my sessions</a></li>
         <li><a href="/logout">logout</a></li>
-      {% if session.get('is_admin') == True %}
-        <li><a href="/admin">Admin Homepage</a></li>
-      {% endif %}
+        {% if session.get('is_admin') == True %}
+          <li><a href="/admin">Admin Homepage</a></li>
+        {% endif %}
       </ul>
     </div>
 
@@ -55,10 +55,6 @@
       {% endblock %}
     </main>
 
-    <!-- <footer>
-      <p style="padding: 20px">Theo Knights - Collyers</p>
-    </footer> -->
-
     <script>
       const burgerButton = document.getElementById('burger-button');
       const burgerMenu = document.getElementById('burger-menu');
@@ -71,7 +67,7 @@
       document.addEventListener('click', (event) => {
         const isClickInsideMenu = burgerMenu.contains(event.target);
         const isClickOnButton = burgerButton.contains(event.target);
-    
+
         if (!isClickInsideMenu && !isClickOnButton) {
           burgerMenu.classList.remove('active');
         }

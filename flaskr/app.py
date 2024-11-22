@@ -83,18 +83,6 @@ def support():
 
     return render_template("support.html")
 
-
-@app.route("/admin")
-def admin():
-    if "email" not in session:
-        flash("Please login to access admin panel", "warning")
-        return redirect("/login")
-    elif session.get("is_admin"):
-        flash("Welcome to admin panel", "success")
-        return render_template("admin.html")
-    flash("Access denied: Admin privileges required", "error")
-    return redirect("/")
-
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
     if 'email' not in session:
@@ -319,6 +307,170 @@ def sessions():
     conn.close()
     return render_template('sessions.html', bookings=bookings)
 
+
+@app.route("/admin")
+def admin():
+    if "email" not in session:
+        flash("Please login to access admin panel", "warning")
+        return redirect("/login")
+    elif session.get("is_admin"):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Fetch sessions without overflow
+        cursor.execute('''
+            SELECT 
+                b.booking_id,
+                p.name AS participant_name,
+                a1.activity_name AS activity1_name,
+                a2.activity_name AS activity2_name,
+                a3.activity_name AS activity3_name,
+                b.overflow_count,
+                b.created_at
+            FROM bookings b
+            JOIN participants p ON b.participant_id = p.participant_id
+            LEFT JOIN activities a1 ON b.activity1_id = a1.activity_id
+            LEFT JOIN activities a2 ON b.activity2_id = a2.activity_id
+            LEFT JOIN activities a3 ON b.activity3_id = a3.activity_id
+            WHERE b.overflow_count = 0
+            ORDER BY b.booking_id ASC
+        ''')
+        sessions_no_overflow = cursor.fetchall()
+
+        # Fetch sessions with overflow
+        cursor.execute('''
+            SELECT 
+                b.booking_id,
+                p.name AS participant_name,
+                a1.activity_name AS activity1_name,
+                a2.activity_name AS activity2_name,
+                a3.activity_name AS activity3_name,
+                b.overflow_count,
+                b.created_at,
+                ROW_NUMBER() OVER (ORDER BY b.overflow_count ASC) AS waiting_list_position
+            FROM bookings b
+            JOIN participants p ON b.participant_id = p.participant_id
+            LEFT JOIN activities a1 ON b.activity1_id = a1.activity_id
+            LEFT JOIN activities a2 ON b.activity2_id = a2.activity_id
+            LEFT JOIN activities a3 ON b.activity3_id = a3.activity_id
+            WHERE b.overflow_count > 0
+            ORDER BY b.overflow_count ASC
+        ''')
+        sessions_with_overflow = cursor.fetchall()
+
+        # Fetch support messages
+        cursor.execute('SELECT * FROM support ORDER BY created_at DESC')
+        support_messages = cursor.fetchall()
+
+        conn.close()
+        return render_template('admin.html', sessions_no_overflow=sessions_no_overflow, sessions_with_overflow=sessions_with_overflow, support_messages=support_messages)
+    else:
+        flash("Access denied: Admin privileges required", "error")
+        return redirect("/")
+
+@app.route('/admin/edit_session/<int:booking_id>', methods=['GET', 'POST'])
+def edit_session(booking_id):
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+        participant_id = request.form.get('participant_id')
+        activity1_id = request.form.get('activity1_id')
+        activity2_id = request.form.get('activity2_id')
+        activity3_id = request.form.get('activity3_id')
+
+        cursor.execute('''
+            UPDATE bookings
+            SET participant_id = ?, activity1_id = ?, activity2_id = ?, activity3_id = ?
+            WHERE booking_id = ?
+        ''', (participant_id, activity1_id, activity2_id, activity3_id, booking_id))
+        conn.commit()
+        flash('Session updated successfully!', 'success')
+        return redirect(url_for('admin'))
+
+    cursor.execute('''
+        SELECT 
+            b.booking_id,
+            p.name AS participant_name,
+            a1.activity_name AS activity1_name,
+            a2.activity_name AS activity2_name,
+            a3.activity_name AS activity3_name,
+            b.overflow_count,
+            b.created_at
+        FROM bookings b
+        JOIN participants p ON b.participant_id = p.participant_id
+        LEFT JOIN activities a1 ON b.activity1_id = a1.activity_id
+        LEFT JOIN activities a2 ON b.activity2_id = a2.activity_id
+        LEFT JOIN activities a3 ON b.activity3_id = a3.activity_id
+        WHERE b.booking_id = ?
+    ''', (booking_id,))
+    session_data = cursor.fetchone()
+
+    cursor.execute('SELECT participant_id, name FROM participants')
+    participants = cursor.fetchall()
+
+    cursor.execute('SELECT activity_id, activity_name FROM activities')
+    activities = cursor.fetchall()
+
+    conn.close()
+    return render_template('edit_session.html', session_data=session_data, participants=participants, activities=activities)
+
+@app.route('/admin/delete_session/<int:booking_id>', methods=['POST'])
+def delete_session(booking_id):
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('DELETE FROM bookings WHERE booking_id = ?', (booking_id,))
+    conn.commit()
+
+    # Move the lowest overflow session to the main list
+    cursor.execute('''
+        SELECT booking_id FROM bookings WHERE overflow_count > 0 ORDER BY overflow_count ASC LIMIT 1
+    ''')
+    lowest_overflow_session = cursor.fetchone()
+    if lowest_overflow_session:
+        cursor.execute('''
+            UPDATE bookings SET overflow_count = 0 WHERE booking_id = ?
+        ''', (lowest_overflow_session[0],))
+        conn.commit()
+
+    conn.close()
+    flash('Session deleted successfully!', 'success')
+    return redirect(url_for('admin'))
+
+
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE users SET email = ?, password = ?, first_name = ?, last_name = ?
+            WHERE email = ?
+        ''', (email, password, first_name, last_name, session['email']))
+        conn.commit()
+        conn.close()
+
+        session['email'] = email
+        flash('Account updated successfully!', 'success')
+        return redirect(url_for('admin'))
+
+    return render_template('edit_account.html')
 
 @app.errorhandler(404)
 def page_not_found(e):

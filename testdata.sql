@@ -16,15 +16,16 @@ INSERT INTO activities (activity_name) VALUES
 ('Robotics');
 
 -- Insert test data into the bookings table
-INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activity3_id) VALUES
-(1 , 2, 1, 2, 3),
+INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activity3_id,overflow_count) VALUES
+(1 , 2, 1, 2, 3,1),
+(1 , 2, 1, 2, 3,2),
 (2, 2, NULL, NULL);
 
 
 
 -- Insert test user if not exists
 INSERT OR IGNORE INTO users (user_id, email, password, first_name, last_name, is_admin) 
-VALUES (1, 'test@example.com', 'hashed_password', 'Test', 'User', 0);
+VALUES (3, 'test@example.com', 'hashed_password', 'Test', 'User', 1);
 
 -- Insert sample support tickets
 INSERT INTO support (user_id, support) VALUES 

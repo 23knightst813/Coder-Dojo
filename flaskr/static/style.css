@@ -11,6 +11,7 @@
   align-items: center;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Add this line */
 }
 .user-email {
   font-family: 'Marck Script', cursive;
@@ -18,6 +19,7 @@
 .burger-fillings.active {
   display: flex;
   color: white;
+  z-index: 1000; /* Add this line */
 }
 #newParticipantForm {
   border: 1px solid #ccc;
@@ -32,6 +34,7 @@
   cursor: pointer;
   width: 30px;
   height: 30px;
+  z-index: 1001; /* Add this line */
   
 }
 .burger-fillings ul {
@@ -368,8 +371,6 @@ iframe {
   font-style: italic;
   color: #856404;
 }
-
-
 
 textarea {
   width: 100%;

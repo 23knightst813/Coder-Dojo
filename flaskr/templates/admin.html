@@ -1,13 +1,101 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 
+{% block content %}
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/booking" class="navbar-btn">booking</a>
-  <a href="/login" class="navbar-btn">login</a>
+  <a href="/logout" class="navbar-btn">logout</a>
 </nav>
-  
-<h1>admin</h1>
-<p>hello, {{email}}</p>
-<p>click on the links above to navigate the site.</p>
-  
+
+<h1 class="head">admin panel</h1>
+
+<h2>sessions without overflow</h2>
+<div class="session-container">
+  {% if sessions_no_overflow %}
+    <div class="session-list">
+      {% for session in sessions_no_overflow %}
+        <div class="session-item">
+          <h2>booking id: {{ session[0] }}</h2>
+          <div class="session-info">
+            <p><strong>participant:</strong> {{ session[1] }}</p>
+            <p><strong>activities:</strong></p>
+            <ul class="activities-list">
+              {% if session[2] %}
+                <li>{{ session[2] }}</li>
+              {% endif %}
+              {% if session[3] %}
+                <li>{{ session[3] }}</li>
+              {% endif %}
+              {% if session[4] %}
+                <li>{{ session[4] }}</li>
+              {% endif %}
+            </ul>
+            <p><strong>date:</strong> {{ session[6] }}</p>
+            <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}">
+              <button type="submit" class="btn">delete</button>
+            </form>
+            <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>no sessions without overflow.</p>
+  {% endif %}
+</div>
+
+<h2>sessions with overflow</h2>
+<div class="session-container">
+  {% if sessions_with_overflow %}
+    <div class="session-list">
+      {% for session in sessions_with_overflow %}
+        <div class="session-item">
+          <h2>booking id: {{ session[0] }}</h2>
+          <div class="session-info">
+            <p><strong>participant:</strong> {{ session[1] }}</p>
+            <p><strong>activities:</strong></p>
+            <ul class="activities-list">
+              {% if session[2] %}
+                <li>{{ session[2] }}</li>
+              {% endif %}
+              {% if session[3] %}
+                <li>{{ session[3] }}</li>
+              {% endif %}
+              {% if session[4] %}
+                <li>{{ session[4] }}</li>
+              {% endif %}
+            </ul>
+            <p><strong>date:</strong> {{ session[6] }}</p>
+            <p><strong>waiting list position:</strong> {{ session[7] }}</p>
+            <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}">
+              <button type="submit" class="btn">delete</button>
+            </form>
+            <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>no sessions with overflow.</p>
+  {% endif %}
+</div>
+
+<h2>support messages</h2>
+<div class="session-container">
+  {% if support_messages %}
+    <div class="session-list">
+      {% for message in support_messages %}
+        <div class="session-item">
+          <h2>user id: {{ message[1] }}</h2>
+          <div class="session-info">
+            <p><strong>message:</strong> {{ message[2] }}</p>
+            <p><strong>date:</strong> {{ message[3] }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>no support messages.</p>
+  {% endif %}
+</div>
 {% endblock %}
