@@ -11,7 +11,7 @@
   align-items: center;
   color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000; /* Add this line */
+  z-index: 1000;
 }
 .user-email {
   font-family: 'Marck Script', cursive;
@@ -19,7 +19,10 @@
 .burger-fillings.active {
   display: flex;
   color: white;
-  z-index: 1000; /* Add this line */
+  z-index: 1000; 
+}
+.burger-fillings.active ~ .burger-button {
+  display: none;
 }
 #newParticipantForm {
   border: 1px solid #ccc;
@@ -30,12 +33,10 @@
   font-family: 'Marck Script', cursive;
 }
 .burger-button {
-  
   cursor: pointer;
   width: 30px;
   height: 30px;
   z-index: 1001; /* Add this line */
-  
 }
 .burger-fillings ul {
   list-style: none;
@@ -109,8 +110,6 @@ body {
   padding: 20px;
   text-align: center;
   margin-top: -30px;
-  
-  
 }
 .form-container h2 {
   font-size: 40px;
@@ -128,6 +127,7 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 18px;
+  font-family: "Nixie One", system-ui;
 }
 .form-container label {
   font-size: 16px;
@@ -139,14 +139,12 @@ body {
   letter-spacing: 5px;
   margin-bottom: 20px;
   text-align: center;
-
 }
 .head {
   text-align: center;
   width: 100%;
   padding: 20px 0;
 }
-
 .bars-left, .bars-right {
   position: fixed;
   top: 50%;
@@ -156,17 +154,14 @@ body {
   z-index: -1;
   pointer-events: none;
 }
-
 .bars-left {
   left: 0;
   padding: 125px;
 }
-
 .bars-right {
   right: 0;
   padding: 120px;
 }
-
 /* Style the new participant form */
 #newParticipantForm {
   border: 1px solid #ccc;
@@ -176,16 +171,13 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
 #newParticipantForm h3 {
   margin-bottom: 15px;
 }
-
 #newParticipantForm label {
   font-size: 16px;
   margin-top: 10px;
 }
-
 #newParticipantForm input[type="text"],
 #newParticipantForm input[type="number"] {
   width: 80%;
@@ -194,12 +186,10 @@ body {
   font-size: 16px;
   border-radius: 4px;
 }
-
 #newParticipantForm .btn {
   margin-top: 20px;
   width: auto;
 }
-
 .flashes {
   position: fixed;
   top: 20px;
@@ -210,7 +200,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
 .flashes li {
   background-color: rgba(255, 255, 255, 0.95);
   color: #333;
@@ -224,19 +213,15 @@ body {
   text-align: left;
   animation: slide-in-out 4s ease-in-out forwards;
 }
-
 .flashes li.success {
   border-color: #6FCF97; /* Green for success */
 }
-
 .flashes li.error {
   border-color: #EB5757; /* Red for error */
 }
-
 .flashes li.info {
   border-color: #2D9CDB; /* Blue for info */
 }
-
 @keyframes slide-in-out {
   0% {
     opacity: 0;
@@ -251,7 +236,6 @@ body {
     transform: translateY(-20px);
   }
 }
-
 .main-title {
   text-align: center;
   font-size: 128px;
@@ -262,14 +246,12 @@ body {
   width: 100%;
   color: #737373;
 }
-
 .main-body {
   text-align: center;
   position: absolute;
   top: 65%;
   left: 50%;
 }
-
 .map-container {
   max-width: 600px;
   margin: 20px auto;
@@ -277,14 +259,12 @@ body {
   overflow: hidden;
   margin-top: 75px;
 }
-
 iframe {
   display: block;
   width: 100%;
   height: 450px;
   border: none;
 }
-
 .text-box {
   background-color: #B5D0D0;
   padding: 20px;
@@ -294,15 +274,12 @@ iframe {
   font-family: 'Major Mono Display', monospace;
   font-size: 16px;
   max-width: 80%;
-  height: 14vh; 
+  height: auto; 
 }
-
 .text-box p {
   margin: 0;
   line-height: 1.6;
 }
-
-
 .session-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -311,7 +288,6 @@ iframe {
   margin: 40px auto;
   padding: 0 20px;
 }
-
 .session-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -319,7 +295,6 @@ iframe {
   margin: 0;
   padding: 0;
 }
-
 .session-item {
   background-color: #ffffff;
   padding: 25px;
@@ -330,39 +305,32 @@ iframe {
   flex-direction: column;
   gap: 12px;
 }
-
 .session-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
-
 .session-item h2 {
   font-size: 1.25rem;
   margin: 0;
   padding-bottom: 12px;
   border-bottom: 1px solid #eee;
 }
-
 .session-info {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-
 .session-info p {
   margin: 0;
   line-height: 1.4;
 }
-
 .activities-list {
   padding-left: 20px;
   margin: 8px 0;
 }
-
 .activities-list li {
   margin: 4px 0;
 }
-
 .overflow-notice {
   margin-top: auto;
   padding: 8px;
@@ -371,7 +339,6 @@ iframe {
   font-style: italic;
   color: #856404;
 }
-
 textarea {
   width: 100%;
   padding: 12px;
@@ -381,4 +348,24 @@ textarea {
   font-size: 16px;
   font-family: inherit;
   resize: vertical;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-btn {
+    margin: 10px 0;
+  }
+
+  .bars-left,
+  .bars-right {
+    display: none;
+  }
+
+  .main-title {
+    font-size: 64px; /* Adjust the font size as needed */
+  }
 }

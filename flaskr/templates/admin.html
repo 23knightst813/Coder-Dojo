@@ -3,13 +3,13 @@
 {% block content %}
 <nav>
   <a href="/about" class="navbar-btn">about</a>
-  <a href="/booking" class="navbar-btn">booking</a>
+  <a href="/" class="navbar-btn">home</a>
   <a href="/logout" class="navbar-btn">logout</a>
 </nav>
 
 <h1 class="head">admin panel</h1>
 
-<h2>sessions without overflow</h2>
+<h2 class="head">sessions without overflow</h2>
 <div class="session-container">
   {% if sessions_no_overflow %}
     <div class="session-list">
@@ -44,7 +44,7 @@
   {% endif %}
 </div>
 
-<h2>sessions with overflow</h2>
+<h2 class="head">sessions with overflow</h2>
 <div class="session-container">
   {% if sessions_with_overflow %}
     <div class="session-list">
@@ -80,7 +80,7 @@
   {% endif %}
 </div>
 
-<h2>support messages</h2>
+<h2 class="head">support messages</h2>
 <div class="session-container">
   {% if support_messages %}
     <div class="session-list">

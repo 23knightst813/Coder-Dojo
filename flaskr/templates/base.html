@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
     <title>My Website</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-    <!-- base.html -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&family=Nixie+One&display=swap" rel="stylesheet">
 </head>
   <body>
 
     <img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
     <img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
 
-    <img src="{{ url_for('static', filename='Hamburgur.svg') }}" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" />
+    <img src="{{ url_for('static', filename='Hamburgur.svg') }}" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" tabindex="0" />
 
     <div id="burger-menu" class="burger-fillings">
       <img src="{{ url_for('static', filename='profile_icon.svg') }}" alt="Profile Icon" style="width: 108px; height: 133px;">
@@ -70,6 +69,13 @@
 
         if (!isClickInsideMenu && !isClickOnButton) {
           burgerMenu.classList.remove('active');
+        }
+      });
+
+      // Toggle menu on Tab key press
+      burgerButton.addEventListener('keydown', (event) => {
+        if (event.key === 'Tab') {
+          burgerMenu.classList.add('active');
         }
       });
     </script>
