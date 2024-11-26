@@ -69,3 +69,5 @@ dojo.db
 
 # Specific file to ignore
 Checklist for TASK 2 Deliverables.docx
+
+*.doxc

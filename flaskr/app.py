@@ -1,7 +1,11 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
 from werkzeug.security import generate_password_hash
+import os
+import shutil
+from datetime import datetime
 
+from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
@@ -21,6 +25,7 @@ def home():
 
     return response
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -30,8 +35,24 @@ def register():
         last_name = request.form['last_name']
         password_confirm = request.form['password_confirm']
 
+        if not all([is_not_empty(email), is_not_empty(password), is_not_empty(first_name), is_not_empty(last_name)]):
+            flash("All fields are required", "error")
+            return redirect("/register")
+
+        if not is_valid_email(email):
+            flash("Invalid email address", "error")
+            return redirect("/register")
+
+        if not is_within_length(first_name, 50) or not is_within_length(last_name, 50):
+            flash("First name and last name must be 50 characters or less", "error")
+            return redirect("/register")
+
         if password != password_confirm:
             flash("Passwords do not match", "error")
+            return redirect("/register")
+
+        if not is_secure_password(password):
+            flash("Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.", "error")
             return redirect("/register")
 
         if not add_user(email, password, first_name, last_name):
@@ -488,6 +509,27 @@ def delete_support(support_id):
         return redirect(url_for('admin'))
 
     return render_template('edit_account.html')
+
+@app.route('/admin/backup_database', methods=['POST'])
+def backup_database():
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    backup_folder = 'backup'
+    if not os.path.exists(backup_folder):
+        os.makedirs(backup_folder)
+
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    backup_file = os.path.join(backup_folder, f'dojo_backup_{timestamp}.db')
+
+    try:
+        shutil.copy('dojo.db', backup_file)
+        flash('Database backup created successfully!', 'success')
+    except Exception as e:
+        flash(f'An error occurred while creating the backup: {str(e)}', 'error')
+
+    return redirect(url_for('admin'))
 
 @app.errorhandler(404)
 def page_not_found(e):
