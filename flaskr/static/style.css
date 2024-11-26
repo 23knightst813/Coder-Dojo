@@ -369,3 +369,34 @@ textarea {
     font-size: 64px; /* Adjust the font size as needed */
   }
 }
+
+.cookie-consent {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  z-index: 1000;
+}
+
+.cookie-consent p {
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+.cookie-consent .btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cookie-consent .btn:hover {
+  background-color: #45a049;
+}

@@ -38,6 +38,16 @@
       </ul>
     </div>
 
+    <!-- Cookie Consent Pop-up -->
+    {% if not request.cookies.get('cookie_consent') %}
+    <div id="cookie-consent" class="cookie-consent">
+        <p>We use cookies to improve your experience. by using our site, you agree to our use of cookies.</p>
+        <form method="post" action="{{ url_for('set_cookie') }}">
+            <button type="submit" class="btn">Accept</button>
+        </form>
+    </div>
+    {% endif %}
+
     <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -76,6 +86,14 @@
       burgerButton.addEventListener('keydown', (event) => {
         if (event.key === 'Tab') {
           burgerMenu.classList.add('active');
+        }
+      });
+
+      // JavaScript to handle the cookie consent pop-up
+      document.addEventListener('DOMContentLoaded', function() {
+        const cookieConsent = document.getElementById('cookie-consent');
+        if (cookieConsent) {
+            cookieConsent.style.display = 'block';
         }
       });
     </script>

@@ -1,4 +1,5 @@
 import sqlite3
+from werkzeug.security import generate_password_hash
 
 def setup_db():
     conn = sqlite3.connect('dojo.db')
@@ -69,11 +70,12 @@ def setup_db():
 def add_user(email, password, first_name, last_name):
     conn = sqlite3.connect('dojo.db')
     cursor = conn.cursor()
+    hashed_password = generate_password_hash(password)
     try:
         cursor.execute('''
             INSERT INTO users (email, password, first_name, last_name)
             VALUES (?, ?, ?, ?)
-        ''', (email, password, first_name, last_name))
+        ''', (email, hashed_password, first_name, last_name))
         conn.commit()
         return True
     except sqlite3.IntegrityError:
@@ -92,4 +94,3 @@ def get_user_id_by_email(email):
 
 def get_db_connection():
     return sqlite3.connect('dojo.db')
-

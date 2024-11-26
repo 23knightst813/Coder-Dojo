@@ -1,5 +1,7 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
+from werkzeug.security import generate_password_hash
+
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
@@ -219,10 +221,11 @@ def edit_profile():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         password = request.form.get('password')
+        hashed_password = generate_password_hash(password)
 
         cursor.execute('''
             UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?
-        ''', (first_name, last_name, password, user_id))
+        ''', (first_name, last_name, hashed_password, user_id))
 
         # Update existing participants
         participant_ids = request.form.getlist('participant_id')
@@ -477,6 +480,12 @@ def page_not_found(e):
     flash('Page not found', 'error')
     return redirect("/")    
 
+
+@app.route('/set_cookie', methods=['POST'])
+def set_cookie():
+    response = make_response(redirect(url_for('home')))
+    response.set_cookie('cookie_consent', 'true', max_age=60*60*24*365)  # 1 year
+    return response
 
 if __name__ == '__main__':
     setup_db()
