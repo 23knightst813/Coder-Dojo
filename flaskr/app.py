@@ -546,7 +546,56 @@ def method_not_allowed(e):
     flash('Method not allowed', 'error')
     return redirect("/")
 
+@app.errorhandler(403)
+def forbidden(e):
+    flash('Access denied', 'error')
+    return redirect("/")
 
+@app.errorhandler(401)
+def unauthorized(e):
+    flash('Unauthorized access', 'error')
+    return redirect("/")
+
+@app.errorhandler(400)
+def bad_request(e):
+    flash('Bad request', 'error')
+    return redirect("/")
+
+@app.errorhandler(413)
+def request_entity_too_large(e):
+    flash('Request entity too large', 'error')
+    return redirect("/")
+
+@app.route('/status', methods=['POST'])
+def status():
+    messages = []
+
+    # get the current directory
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # check if all required files are present
+    required_files = ['app.py', 'auth.py', 'db.py', 'validation.py', 'templates/base.html']
+    for file in required_files:
+        file_path = os.path.join(current_dir, file)
+        if not os.path.exists(file_path):
+            messages.append(f"missing required file: {file}")
+
+    # check database connection
+    try:
+        conn = get_db_connection()
+        conn.execute('select 1')
+        conn.close()
+        messages.append("database connection: ok")
+    except Exception as e:
+        messages.append(f"database connection error: {str(e)}")
+
+    if not messages:
+        messages.append("all checks passed successfully!")
+
+    for message in messages:
+        flash(message, 'info')
+
+    return redirect(url_for('admin'))
 
 @app.route('/set_cookie', methods=['POST'])
 def set_cookie():

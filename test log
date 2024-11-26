@@ -1,0 +1,173 @@
+# Testing Log for Coder Dojo Web Application
+
+## Test Case 1: User Registration
+### Normal Data
+- Input: 
+  - Email: user@example.com
+  - Password: SecurePass123
+  - First Name: John
+  - Last Name: Doe
+- Expected Result: User registered successfully.
+- Actual Result: User registered successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - Email: user@example
+  - Password: pass
+  - First Name: 
+  - Last Name: 
+- Expected Result: Error messages for invalid email, weak password, and empty fields.
+- Actual Result: Error messages displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - Email: user@example.com
+  - Password: A very long password with 1000 characters
+  - First Name: John
+  - Last Name: Doe
+- Expected Result: User registered successfully or error message for password length.
+- Actual Result: User registered successfully.
+- Status: Pass
+
+## Test Case 2: User Login
+### Normal Data
+- Input: 
+  - Email: user@example.com
+  - Password: SecurePass123
+- Expected Result: User logged in successfully.
+- Actual Result: User logged in successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - Email: user@example.com
+  - Password: WrongPass
+- Expected Result: Error message for incorrect password.
+- Actual Result: Error message displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - Email: user@example.com
+  - Password: A very long password with 1000 characters
+- Expected Result: Error message for incorrect password.
+- Actual Result: Error message displayed as expected.
+- Status: Pass
+
+## Test Case 3: Profile Editing
+### Normal Data
+- Input: 
+  - First Name: Jane
+  - Last Name: Smith
+  - Password: NewSecurePass123
+  - Participant Name: Participant1
+  - Participant Age: 10
+- Expected Result: Profile updated successfully.
+- Actual Result: Profile updated successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - First Name: 
+  - Last Name: 
+  - Password: 
+  - Participant Name: 
+  - Participant Age: 
+- Expected Result: Error messages for empty fields.
+- Actual Result: Error messages displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - First Name: A very long name with 1000 characters
+  - Last Name: A very long name with 1000 characters
+  - Password: A very long password with 1000 characters
+  - Participant Name: A very long name with 1000 characters
+  - Participant Age: 1000
+- Expected Result: Profile updated successfully or error messages for field lengths.
+- Actual Result: Profile updated successfully.
+- Status: Pass
+
+## Test Case 4: Support Request
+### Normal Data
+- Input: 
+  - Subject: Need help
+  - Message: I need help with my account.
+- Expected Result: Support request submitted successfully.
+- Actual Result: Support request submitted successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - Subject: 
+  - Message: 
+- Expected Result: Error messages for empty fields.
+- Actual Result: Error messages displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - Subject: A very long subject with 1000 characters
+  - Message: A very long message with 1000 characters
+- Expected Result: Support request submitted successfully.
+- Actual Result: Support request submitted successfully.
+- Status: Pass
+
+## Test Case 5: Booking Activities
+### Normal Data
+- Input: 
+  - Participant: Participant1
+  - Activity1: Coding Basics
+  - Activity2: Advanced Python
+  - Activity3: Robotics
+- Expected Result: Booking created successfully.
+- Actual Result: Booking created successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - Participant: 
+  - Activity1: 
+  - Activity2: 
+  - Activity3: 
+- Expected Result: Error messages for empty fields.
+- Actual Result: Error messages displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - Participant: Participant1
+  - Activity1: A very long activity name with 1000 characters
+  - Activity2: A very long activity name with 1000 characters
+  - Activity3: A very long activity name with 1000 characters
+- Expected Result: Booking created successfully or error messages for field lengths.
+- Actual Result: Booking created successfully.
+- Status: Pass
+
+## Test Case 6: Admin Panel Access
+### Normal Data
+- Input: 
+  - Email: admin@codeclub.com
+  - Password: adminpass
+- Expected Result: Admin panel accessed successfully.
+- Actual Result: Admin panel accessed successfully.
+- Status: Pass
+
+### Erroneous Data
+- Input: 
+  - Email: admin@codeclub.com
+  - Password: wrongpass
+- Expected Result: Error message for incorrect password.
+- Actual Result: Error message displayed as expected.
+- Status: Pass
+
+### Extreme Data
+- Input: 
+  - Email: admin@codeclub.com
+  - Password: A very long password with 1000 characters
+- Expected Result: Error message for incorrect password.
+- Actual Result: Error message displayed as expected.
+- Status: Pass
+
