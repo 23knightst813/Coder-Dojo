@@ -536,6 +536,17 @@ def page_not_found(e):
     flash('Page not found', 'error')
     return redirect("/")    
 
+@app.errorhandler(500)
+def internal_server_error(e):
+    flash('Internal server error', 'error')
+    return redirect("/")
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    flash('Method not allowed', 'error')
+    return redirect("/")
+
+
 
 @app.route('/set_cookie', methods=['POST'])
 def set_cookie():
