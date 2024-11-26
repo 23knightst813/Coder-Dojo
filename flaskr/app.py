@@ -141,10 +141,10 @@ def booking():
                 
                 try:
                     age = int(age)
-                    if age <= 0:
+                    if age < 7 or age > 17:
                         raise ValueError
                 except ValueError:
-                    flash('Please provide a valid age.', 'error')
+                    flash('Participant age must be between 7 and 17.', 'error')
                     return redirect(url_for('booking'))
                 
                 cursor.execute(
@@ -254,6 +254,9 @@ def edit_profile():
         participant_ages = request.form.getlist('participant_age')
 
         for p_id, p_name, p_age in zip(participant_ids, participant_names, participant_ages):
+            if not (7 <= int(p_age) <= 17):
+                flash('Participant age must be between 7 and 17.', 'error')
+                return redirect(url_for('edit_profile'))
             cursor.execute('''
                 UPDATE participants SET name = ?, age = ? WHERE participant_id = ? AND user_id = ?
             ''', (p_name, p_age, p_id, user_id))
@@ -264,6 +267,9 @@ def edit_profile():
 
         for name, age in zip(new_participant_names, new_participant_ages):
             if name.strip() and age.strip():
+                if not (7 <= int(age) <= 17):
+                    flash('Participant age must be between 7 and 17.', 'error')
+                    return redirect(url_for('edit_profile'))
                 cursor.execute('''
                     INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)
                 ''', (user_id, name, age))
