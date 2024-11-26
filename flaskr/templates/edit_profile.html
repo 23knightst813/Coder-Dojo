@@ -12,13 +12,13 @@
 <form method="post" class="form-container">
     <h2>user information</h2>
     <label for="first_name">first name:</label>
-    <input type="text" name="first_name" value="{{ user_info[0] }}" required>
+    <input type="text" name="first_name" value="{{ user_info[1] }}" required>
 
     <label for="last_name">last name:</label>
-    <input type="text" name="last_name" value="{{ user_info[1] }}" required>
+    <input type="text" name="last_name" value="{{ user_info[2] }}" required>
 
     <label for="password">password:</label>
-    <input type="password" name="password" value="{{ user_info[2] }}" required>
+    <input type="password" name="password" required>
 
     <h2>participants</h2>
     {% for participant in participant_info %}
@@ -43,10 +43,14 @@
         </div>
     </div>
 
-    <button type="button" onclick="addNewParticipant()" class="btn">another</button>
-
+    <button type="button" onclick="addNewParticipant()" class="btn">new participant</button>
+    <br>
     <button type="submit" class="btn">update profile</button>
 </form>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{{ url_for('download_data') }}" class="btn">download my data</a>
+</div>
 
 <script>
     function addNewParticipant() {

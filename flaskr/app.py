@@ -1,9 +1,11 @@
 # app.py
-from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response
+from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file
 from werkzeug.security import generate_password_hash
 import os
+import io
 import shutil
 from datetime import datetime
+import csv
 
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
@@ -229,67 +231,41 @@ def booking():
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
     if 'email' not in session:
-        flash('Please log in to access the profile page.', 'warning')
+        flash('Please log in to edit your profile.', 'warning')
         return redirect(url_for('login'))
 
-    user_email = session['email']
-    user_id = get_user_id_by_email(user_email)
+    user_id = get_user_id_by_email(session['email'])
     conn = get_db_connection()
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        # Update user information
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-        password = request.form.get('password')
-        hashed_password = generate_password_hash(password)
+        new_email = request.form['email']
+        new_first_name = request.form['first_name']
+        new_last_name = request.form['last_name']
+        new_password = request.form['password']
 
-        cursor.execute('''
-            UPDATE users SET first_name = ?, last_name = ?, password = ? WHERE user_id = ?
-        ''', (first_name, last_name, hashed_password, user_id))
-
-        # Update existing participants
-        participant_ids = request.form.getlist('participant_id')
-        participant_names = request.form.getlist('participant_name')
-        participant_ages = request.form.getlist('participant_age')
-
-        for p_id, p_name, p_age in zip(participant_ids, participant_names, participant_ages):
-            if not (7 <= int(p_age) <= 17):
-                flash('Participant age must be between 7 and 17.', 'error')
-                return redirect(url_for('edit_profile'))
-            cursor.execute('''
-                UPDATE participants SET name = ?, age = ? WHERE participant_id = ? AND user_id = ?
-            ''', (p_name, p_age, p_id, user_id))
-
-        # Add new participants
-        new_participant_names = request.form.getlist('new_participant_name')
-        new_participant_ages = request.form.getlist('new_participant_age')
-
-        for name, age in zip(new_participant_names, new_participant_ages):
-            if name.strip() and age.strip():
-                if not (7 <= int(age) <= 17):
-                    flash('Participant age must be between 7 and 17.', 'error')
-                    return redirect(url_for('edit_profile'))
-                cursor.execute('''
-                    INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)
-                ''', (user_id, name, age))
+        # Hash the new password if provided
+        if new_password:
+            hashed_password = generate_password_hash(new_password)
+            cursor.execute('UPDATE users SET email = ?, first_name = ?, last_name = ?, password = ? WHERE user_id = ?',
+                           (new_email, new_first_name, new_last_name, hashed_password, user_id))
+        else:
+            cursor.execute('UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE user_id = ?',
+                           (new_email, new_first_name, new_last_name, user_id))
 
         conn.commit()
+        cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
+        user_data = cursor.fetchone()
         conn.close()
-        flash('Profile updated successfully!', 'success')
-        return redirect(url_for('edit_profile'))
 
-    else:
-        # Retrieve user information
-        cursor.execute('SELECT first_name, last_name, password FROM users WHERE user_id = ?', (user_id,))
-        user_info = cursor.fetchone()
+        return render_template('edit_profile.html', user_info=user_data)
 
-        # Retrieve participant information
-        cursor.execute('SELECT participant_id, name, age FROM participants WHERE user_id = ?', (user_id,))
-        participant_info = cursor.fetchall()
+    # For GET request, fetch the current user data to pre-fill the form
+    cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
+    user_data = cursor.fetchone()
+    conn.close()
 
-        conn.close()
-        return render_template('edit_profile.html', user_info=user_info, participant_info=participant_info)
+    return render_template('edit_profile.html', user_info=user_data)
 
 @app.route('/sessions')
 def sessions():
@@ -491,30 +467,6 @@ def delete_support(support_id):
     flash('Support message deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
-    if 'email' not in session or not session.get('is_admin'):
-        flash('Access denied: Admin privileges required', 'error')
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('''
-            UPDATE users SET email = ?, password = ?, first_name = ?, last_name = ?
-            WHERE email = ?
-        ''', (email, password, first_name, last_name, session['email']))
-        conn.commit()
-        conn.close()
-
-        session['email'] = email
-        flash('Account updated successfully!', 'success')
-        return redirect(url_for('admin'))
-
-    return render_template('edit_account.html')
 
 @app.route('/admin/backup_database', methods=['POST'])
 def backup_database():
@@ -536,6 +488,48 @@ def backup_database():
         flash(f'An error occurred while creating the backup: {str(e)}', 'error')
 
     return redirect(url_for('admin'))
+
+
+@app.route('/download_data')
+def download_data():
+    if 'email' not in session:
+        flash('Please log in to download your data.', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = get_user_id_by_email(session['email'])
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Fetch user data
+    cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
+    user_data = cursor.fetchone()
+
+    # Fetch participant data
+    cursor.execute('SELECT name, age FROM participants WHERE user_id = ?', (user_id,))
+    participants = cursor.fetchall()
+
+    conn.close()
+
+    # Create a CSV file in memory
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['Email', 'First Name', 'Last Name'])
+    writer.writerow(user_data)
+    writer.writerow([])
+    writer.writerow(['Participants'])
+    writer.writerow(['Name', 'Age'])
+    for participant in participants:
+        writer.writerow(participant)
+
+    output.seek(0)
+
+    return send_file(
+        io.BytesIO(output.getvalue().encode()),
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name='user_data.csv'
+    )
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -608,6 +602,14 @@ def set_cookie():
     response = make_response(redirect(url_for('home')))
     response.set_cookie('cookie_consent', 'true', max_age=60*60*24*365)  # 1 year
     return response
+
+@app.route('/download')
+def download():
+    return send_file(
+        'path/to/your/file',
+        download_name='your_file_name.ext',
+        as_attachment=True
+    )
 
 if __name__ == '__main__':
     setup_db()
