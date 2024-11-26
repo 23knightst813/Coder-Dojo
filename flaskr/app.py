@@ -449,6 +449,20 @@ def delete_session(booking_id):
     flash('Session deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
+@app.route('/admin/delete_support/<int:support_id>', methods=['POST'])
+def delete_support(support_id):
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM support WHERE support_id = ?', (support_id,))
+    conn.commit()
+    conn.close()
+
+    flash('Support message deleted successfully!', 'success')
+    return redirect(url_for('admin'))
 
     if 'email' not in session or not session.get('is_admin'):
         flash('Access denied: Admin privileges required', 'error')

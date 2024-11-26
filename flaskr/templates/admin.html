@@ -90,6 +90,9 @@
           <div class="session-info">
             <p><strong>message:</strong> {{ message[2] }}</p>
             <p><strong>date:</strong> {{ message[3] }}</p>
+            <form method="post" action="{{ url_for('delete_support', support_id=message[0]) }}">
+              <button type="submit" class="btn">delete</button>
+            </form>
           </div>
         </div>
       {% endfor %}
