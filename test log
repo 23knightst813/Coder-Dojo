@@ -243,13 +243,8 @@
 - Ensure users can join the waitlist and that the system handles waitlist operations efficiently.
 - Status: Pass
 
-## Test Case 19: Notification System
-### Black Box, Functional Test, Usability Test, Performance Test
-- Booking and waitlist actions trigger notifications.
-- Confirm that users receive timely and clear notifications for bookings and waitlist updates.
-- Status: Pass
 
-## Test Case 20: Data Privacy and Deletion (GDPR Compliance)
+## Test Case 19: Data Privacy and Deletion (GDPR Compliance)
 ### Black Box, Functional Test, Integration Test
 - User data exists in the system.
 - Verify that users can manage their data privacy settings and request data deletion in compliance with GDPR.

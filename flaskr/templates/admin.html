@@ -10,7 +10,7 @@
 <h1 class="head">admin panel</h1>
 
 
-<h2 class="head">sessions without overflow</h2>
+<h2 class="head">current bookings</h2>
 <div class="session-container">
   {% if sessions_no_overflow %}
     <div class="session-list">
@@ -45,7 +45,7 @@
   {% endif %}
 </div>
 
-<h2 class="head">sessions with overflow</h2>
+<h2 class="head">waiting list</h2>
 <div class="session-container">
   {% if sessions_with_overflow %}
     <div class="session-list">
@@ -112,7 +112,7 @@
 
 <div style="text-align: center;">
   <form method="post" action="{{ url_for('status') }}">
-    <button type="submit" class="btn">Status</button>
+    <button type="submit" class="btn">status</button>
   </form>
 </div>
 

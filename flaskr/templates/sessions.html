@@ -1,4 +1,3 @@
-<!-- Modify sessions.html -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -36,12 +35,14 @@
                 <p>this session is on overflow. you will be notified if a spot becomes available.</p>
               </div>
             {% endif %}
+            <!-- Fix: Use booking['booking_id'] instead of session['booking_id'] -->
+            <form method="post" action="{{ url_for('delete_session', booking_id=booking['booking_id']) }}">
+              <button type="submit" class="btn">delete</button>
+            </form>
           </div>
         </div>
       {% endfor %}
     </div>
-  {% else %}
-    <p class="head">you have no booked sessions.</p>
   {% endif %}
 </div>
 {% endblock %}

@@ -451,14 +451,26 @@ def edit_session(booking_id):
 
 @app.route('/admin/delete_session/<int:booking_id>', methods=['POST'])
 def delete_session(booking_id):
-    if 'email' not in session or not session.get('is_admin'):
-        flash('Access denied: Admin privileges required', 'error')
+    if 'email' not in session:
+        flash('Please log in to delete a session.', 'warning')
         return redirect(url_for('login'))
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute('DELETE FROM bookings WHERE booking_id = ?', (booking_id,))
+    # Check if the user is an admin
+    if session.get('is_admin'):
+        cursor.execute('DELETE FROM bookings WHERE booking_id = ?', (booking_id,))
+    else:
+        # Verify that the session belongs to the logged-in user
+        user_id = get_user_id_by_email(session['email'])
+        cursor.execute('SELECT COUNT(*) FROM bookings WHERE booking_id = ? AND user_id = ?', (booking_id, user_id))
+        if cursor.fetchone()[0] == 0:
+            flash('Invalid session selected.', 'error')
+            return redirect(url_for('sessions'))
+
+        cursor.execute('DELETE FROM bookings WHERE booking_id = ?', (booking_id,))
+
     conn.commit()
 
     # Move the lowest overflow session to the main list
@@ -474,7 +486,7 @@ def delete_session(booking_id):
 
     conn.close()
     flash('Session deleted successfully!', 'success')
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin' if session.get('is_admin') else 'sessions'))
 
 @app.route('/admin/delete_support/<int:support_id>', methods=['POST'])
 def delete_support(support_id):
