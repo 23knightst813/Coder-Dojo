@@ -314,7 +314,23 @@ def sessions():
     return render_template('sessions.html', bookings=bookings)
 
 
-@app.route("/admin")
+@app.route('/admin/add_activity', methods=['POST'])
+def add_activity():
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    activity_name = request.form['activity_name']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO activities (activity_name) VALUES (?)', (activity_name,))
+    conn.commit()
+    conn.close()
+
+    flash('Activity added successfully!', 'success')
+    return redirect(url_for('admin'))
+
+@app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if "email" not in session:
         flash("Please login to access admin panel", "warning")
@@ -368,11 +384,30 @@ def admin():
         cursor.execute('SELECT * FROM support ORDER BY created_at DESC')
         support_messages = cursor.fetchall()
 
+        # Fetch activities
+        cursor.execute('SELECT * FROM activities ORDER BY activity_name ASC')
+        activities = cursor.fetchall()
+
         conn.close()
-        return render_template('admin.html', sessions_no_overflow=sessions_no_overflow, sessions_with_overflow=sessions_with_overflow, support_messages=support_messages)
+        return render_template('admin.html', sessions_no_overflow=sessions_no_overflow, sessions_with_overflow=sessions_with_overflow, support_messages=support_messages, activities=activities)
     else:
         flash("Access denied: Admin privileges required", "error")
         return redirect("/")
+
+@app.route('/admin/delete_activity/<int:activity_id>', methods=['POST'])
+def delete_activity(activity_id):
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM activities WHERE activity_id = ?', (activity_id,))
+    conn.commit()
+    conn.close()
+
+    flash('Activity deleted successfully!', 'success')
+    return redirect(url_for('admin'))
 
 @app.route('/admin/edit_session/<int:booking_id>', methods=['GET', 'POST'])
 def edit_session(booking_id):

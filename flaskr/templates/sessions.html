@@ -8,13 +8,15 @@
 </nav>
 
 <h1 class="head">my sessions</h1>
+
 <div class="session-container">
   {% if bookings %}
     <div class="session-list">
       {% for booking in bookings %}
-        <div class="session-item"></div>
+        <div class="session-item">
           <h2>booking id: {{ booking['booking_id'] }}</h2>
           <div class="session-info">
+            <p><strong>participant:</strong> {{ booking['participant_name'] }}</p>
             <p><strong>activities:</strong></p>
             <ul class="activities-list">
               {% if booking['activity1_name'] %}
@@ -29,10 +31,11 @@
             </ul>
             <p><strong>date:</strong> {{ booking['created_at'] }}</p>
             {% if booking['overflow_count'] > 0 %}
-              <div class="overflow-notice"></div>
+              <div class="overflow-notice">
                 <p>this session is on overflow. you will be notified if a spot becomes available.</p>
               </div>
             {% endif %}
+            <!-- Fix: Use booking['booking_id'] instead of session['booking_id'] -->
             <form method="post" action="{{ url_for('delete_session', booking_id=booking['booking_id']) }}">
               <button type="submit" class="btn">delete</button>
             </form>
@@ -40,20 +43,6 @@
         </div>
       {% endfor %}
     </div>
-  {% else %}
-    <p class="head" >please book a session</p>
   {% endif %}
 </div>
-
-{% if user.is_admin %}
-  <h1 class="head">add activity</h1>
-
-  <form method="post" class="form-container">
-    <label for="activity_name">activity name:</label>
-    <input type="text" id="activity_name" name="activity_name" required>
-    <button type="submit" class="btn">add activity</button>
-  </form>
-{% endif %}
-
-
 {% endblock %}

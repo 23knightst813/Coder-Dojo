@@ -401,3 +401,80 @@ textarea {
 .cookie-consent .btn:hover {
   background-color: #45a049;
 }
+
+.activity-container {
+  max-width: 1000px; /* Slightly wider for better readability */
+  margin: 40px auto;
+  padding: 0 20px;
+  background-color: #f9f9f9; /* Soft background to create separation */
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.activity-container h3 {
+  font-family: 'Major Mono Display', serif;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.activities-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.activities-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.activities-list li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.activities-list li form {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.activity-btn {
+  background-color: #B5D0D0; /* Matches your site's color scheme */
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.activity-btn:hover {
+  background-color: #9ac0c0;
+}
+
+@media (max-width: 600px) {
+  .activity-container {
+    padding: 0 10px;
+  }
+
+  .activity-form {
+    padding: 20px;
+  }
+
+  .activities-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .activities-list li form {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}

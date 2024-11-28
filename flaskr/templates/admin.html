@@ -9,7 +9,6 @@
 
 <h1 class="head">admin panel</h1>
 
-
 <h2 class="head">current bookings</h2>
 <div class="session-container">
   {% if sessions_no_overflow %}
@@ -32,6 +31,7 @@
               {% endif %}
             </ul>
             <p><strong>date:</strong> {{ session[6] }}</p>
+            <p><strong>waiting list position:</strong> {{ session[7] }}</p>
             <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}">
               <button type="submit" class="btn">delete</button>
             </form>
@@ -41,7 +41,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <p>no sessions without overflow.</p>
+    <p>no sessions with overflow.</p>
   {% endif %}
 </div>
 
@@ -103,6 +103,30 @@
   {% endif %}
 </div>
 
+<h2 class="head">manage activities</h2>
+<div class="activity-container">
+  <br>
+  <p class="head">add new activity</p>
+  <form method="post" action="{{ url_for('add_activity') }}">
+    <label for="activity_name">activity name:</label>
+
+    <input type="text" name="activity_name" id="activity_name" required>
+    <br>
+    <button type="submit" class="btn">add activity</button>
+  </form>
+
+  <p class="head">existing activities</p>
+  <ul class="activities-list">
+    {% for activity in activities %}
+      <li>
+        {{ activity[1] }}
+        <form method="post" action="{{ url_for('delete_activity', activity_id=activity[0]) }}" style="display:inline;">
+          <button type="submit" class="btn">delete</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
 
 <div style="text-align: center;">
   <form method="post" action="{{ url_for('backup_database') }}">
@@ -115,7 +139,6 @@
     <button type="submit" class="btn">status</button>
   </form>
 </div>
-
 
 {% endblock %}
 
