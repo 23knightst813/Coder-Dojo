@@ -295,23 +295,14 @@ def sessions():
         WHERE b.user_id = ?
         ORDER BY b.booking_id ASC
     ''', (user_id,))
-    
-    # Convert tuple results to dictionaries
-    bookings = []
-    for row in cursor.fetchall():
-        booking = {
-            'booking_id': row[0],
-            'participant_name': row[1],
-            'activity1_name': row[2],
-            'activity2_name': row[3],
-            'activity3_name': row[4],
-            'overflow_count': row[5],
-            'created_at': row[6]
-        }
-        bookings.append(booking)
-    
+    bookings = cursor.fetchall()
     conn.close()
-    return render_template('sessions.html', bookings=bookings)
+
+    user = {
+        'is_admin': session.get('is_admin', False)
+    }
+
+    return render_template('sessions.html', bookings=bookings, user=user)
 
 
 @app.route("/admin")
@@ -501,6 +492,29 @@ def backup_database():
 
     return redirect(url_for('admin'))
 
+@app.route('/admin/add_activity', methods=['GET', 'POST'])
+def add_activity():
+    if 'email' not in session or not session.get('is_admin'):
+        flash('Access denied: Admin privileges required', 'error')
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        activity_name = request.form['activity_name']
+
+        if not activity_name:
+            flash('Activity name is required.', 'error')
+            return redirect(url_for('add_activity'))
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO activities (activity_name) VALUES (?)', (activity_name,))
+        conn.commit()
+        conn.close()
+
+        flash('Activity added successfully!', 'success')
+        return redirect(url_for('admin'))
+
+    return render_template('add_activity.html')
 
 @app.route('/download_data')
 def download_data():
