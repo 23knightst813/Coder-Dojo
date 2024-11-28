@@ -1,4 +1,9 @@
 # app.py
+# Purpose: Main application file for the Coder Dojo web application
+# Author: Theo
+# Date: 28 November 2024
+# Notes: Handles routing, user authentication, and various functionalities.
+
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file
 from werkzeug.security import generate_password_hash
 import os
@@ -14,8 +19,15 @@ from auth import sign_in, logout
 app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'
 
+# ----- Home Route -----
 @app.route("/")
 def home():
+    """
+    Render the home page.
+
+    Returns:
+        Response: Rendered home page template.
+    """
     email = "Guest"
     if "email" not in session:
         response = make_response(render_template("home.html", email=email))
@@ -27,9 +39,19 @@ def home():
 
     return response
 
-
+# ----- Registration Route -----
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    """
+    Handle user registration.
+
+    Methods:
+        GET: Render the registration form.
+        POST: Process the registration form and create a new user.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the registration outcome.
+    """
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
@@ -65,8 +87,19 @@ def register():
         return sign_in(email, password)
     return render_template("register.html")
 
+# ----- Login Route -----
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Handle user login.
+
+    Methods:
+        GET: Render the login form.
+        POST: Process the login form and authenticate the user.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the login outcome.
+    """
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -74,17 +107,42 @@ def login():
 
     return render_template("login.html")
 
+# ----- Logout Route -----
 @app.route("/logout")
 def logout_route():
+    """
+    Handle user logout.
+
+    Returns:
+        Response: Redirect to the home page after logging out.
+    """
     logout()  
     return redirect(url_for("home"))
 
+# ----- About Route -----
 @app.route("/about")
 def about():
+    """
+    Render the about page.
+
+    Returns:
+        Response: Rendered about page template.
+    """
     return render_template("about.html")
 
+# ----- Support Route -----
 @app.route("/support", methods=["GET", "POST"])
 def support():
+    """
+    Handle support requests.
+
+    Methods:
+        GET: Render the support form.
+        POST: Process the support form and save the support request.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the support request outcome.
+    """
     if request.method == "POST":
         subject = request.form["subject"]
         message = request.form["message"]
@@ -108,8 +166,19 @@ def support():
 
     return render_template("support.html")
 
+# ----- Booking Route -----
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
+    """
+    Handle activity bookings.
+
+    Methods:
+        GET: Render the booking form.
+        POST: Process the booking form and create a new booking.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the booking outcome.
+    """
     if 'email' not in session:
         flash('Please log in to access the booking page.', 'warning')
         return redirect(url_for('login'))
@@ -228,8 +297,19 @@ def booking():
         conn.close()
         return render_template('booking.html', participants=participants, activities=activities)
 
+# ----- Edit Profile Route -----
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
+    """
+    Handle profile editing.
+
+    Methods:
+        GET: Render the profile editing form.
+        POST: Process the profile editing form and update user information.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the profile editing outcome.
+    """
     if 'email' not in session:
         flash('Please log in to edit your profile.', 'warning')
         return redirect(url_for('login'))
@@ -267,8 +347,15 @@ def edit_profile():
 
     return render_template('edit_profile.html', user_info=user_data)
 
+# ----- Sessions Route -----
 @app.route('/sessions')
 def sessions():
+    """
+    Display user sessions.
+
+    Returns:
+        Response: Rendered sessions page template.
+    """
     if 'email' not in session:
         flash('Please log in to access your sessions.', 'warning')
         return redirect(url_for('login'))
@@ -307,6 +394,12 @@ def sessions():
 
 @app.route("/admin")
 def admin():
+    """
+    Display admin panel.
+
+    Returns:
+        Response: Rendered admin panel template.
+    """
     if "email" not in session:
         flash("Please login to access admin panel", "warning")
         return redirect("/login")
@@ -365,8 +458,19 @@ def admin():
         flash("Access denied: Admin privileges required", "error")
         return redirect("/")
 
+# ----- Edit Session Route -----
 @app.route('/admin/edit_session/<int:booking_id>', methods=['GET', 'POST'])
 def edit_session(booking_id):
+    """
+    Handle session editing.
+
+    Methods:
+        GET: Render the session editing form.
+        POST: Process the session editing form and update session information.
+
+    Returns:
+        Response: Redirect to the appropriate page based on the session editing outcome.
+    """
     if 'email' not in session or not session.get('is_admin'):
         flash('Access denied: Admin privileges required', 'error')
         return redirect(url_for('login'))
@@ -416,8 +520,15 @@ def edit_session(booking_id):
     conn.close()
     return render_template('edit_session.html', session_data=session_data, participants=participants, activities=activities)
 
+# ----- Delete Session Route -----
 @app.route('/admin/delete_session/<int:booking_id>', methods=['POST'])
 def delete_session(booking_id):
+    """
+    Handle session deletion.
+
+    Returns:
+        Response: Redirect to the appropriate page after deleting the session.
+    """
     if 'email' not in session:
         flash('Please log in to delete a session.', 'warning')
         return redirect(url_for('login'))
@@ -455,8 +566,15 @@ def delete_session(booking_id):
     flash('Session deleted successfully!', 'success')
     return redirect(url_for('admin' if session.get('is_admin') else 'sessions'))
 
+# ----- Delete Support Route -----
 @app.route('/admin/delete_support/<int:support_id>', methods=['POST'])
 def delete_support(support_id):
+    """
+    Handle support message deletion.
+
+    Returns:
+        Response: Redirect to the appropriate page after deleting the support message.
+    """
     if 'email' not in session or not session.get('is_admin'):
         flash('Access denied: Admin privileges required', 'error')
         return redirect(url_for('login'))
@@ -470,9 +588,15 @@ def delete_support(support_id):
     flash('Support message deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
-
+# ----- Backup Database Route -----
 @app.route('/admin/backup_database', methods=['POST'])
 def backup_database():
+    """
+    Handle database backup.
+
+    Returns:
+        Response: Redirect to the appropriate page after creating the database backup.
+    """
     if 'email' not in session or not session.get('is_admin'):
         flash('Access denied: Admin privileges required', 'error')
         return redirect(url_for('login'))
@@ -518,6 +642,12 @@ def add_activity():
 
 @app.route('/download_data')
 def download_data():
+    """
+    Handle user data download.
+
+    Returns:
+        Response: CSV file containing user data.
+    """
     if 'email' not in session:
         flash('Please log in to download your data.', 'warning')
         return redirect(url_for('login'))
@@ -556,44 +686,93 @@ def download_data():
         download_name='user_data.csv'
     )
 
-
+# ----- Error Handlers -----
 @app.errorhandler(404)
 def page_not_found(e):
+    """
+    Handle 404 Page Not Found error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Page not found', 'error')
     return redirect("/")    
 
 @app.errorhandler(500)
 def internal_server_error(e):
+    """
+    Handle 500 Internal Server Error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Internal server error', 'error')
     return redirect("/")
 
 @app.errorhandler(405)
 def method_not_allowed(e):
+    """
+    Handle 405 Method Not Allowed error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Method not allowed', 'error')
     return redirect("/")
 
 @app.errorhandler(403)
 def forbidden(e):
+    """
+    Handle 403 Forbidden error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Access denied', 'error')
     return redirect("/")
 
 @app.errorhandler(401)
 def unauthorized(e):
+    """
+    Handle 401 Unauthorized error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Unauthorized access', 'error')
     return redirect("/")
 
 @app.errorhandler(400)
 def bad_request(e):
+    """
+    Handle 400 Bad Request error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Bad request', 'error')
     return redirect("/")
 
 @app.errorhandler(413)
 def request_entity_too_large(e):
+    """
+    Handle 413 Request Entity Too Large error.
+
+    Returns:
+        Response: Redirect to the home page with an error message.
+    """
     flash('Request entity too large', 'error')
     return redirect("/")
 
+# ----- Status Route -----
 @app.route('/status', methods=['POST'])
 def status():
+    """
+    Check the status of the application.
+
+    Returns:
+        Response: Redirect to the admin panel with status messages.
+    """
     messages = []
 
     # get the current directory
@@ -623,14 +802,28 @@ def status():
 
     return redirect(url_for('admin'))
 
+# ----- Set Cookie Route -----
 @app.route('/set_cookie', methods=['POST'])
 def set_cookie():
+    """
+    Set a cookie for cookie consent.
+
+    Returns:
+        Response: Redirect to the home page with the cookie set.
+    """
     response = make_response(redirect(url_for('home')))
     response.set_cookie('cookie_consent', 'true', max_age=60*60*24*365)  # 1 year
     return response
 
+# ----- Download Route -----
 @app.route('/download')
 def download():
+    """
+    Handle file download.
+
+    Returns:
+        Response: File to be downloaded.
+    """
     return send_file(
         'path/to/your/file',
         download_name='your_file_name.ext',

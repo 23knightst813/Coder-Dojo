@@ -1,7 +1,19 @@
+# db.py
+# Purpose: Handles database setup and operations for the Coder Dojo web application
+# Author: Theo
+# Date: 28 November 2024
+# Notes: Implements database schema creation and user management functions.
+
 import sqlite3
 from werkzeug.security import generate_password_hash
 
 def setup_db():
+    """
+    Set up the database by creating necessary tables.
+
+    Returns:
+        None
+    """
     conn = sqlite3.connect('dojo.db')
     cursor = conn.cursor()
     
@@ -68,6 +80,21 @@ def setup_db():
     conn.close()
 
 def add_user(email, password, first_name, last_name):
+    """
+    Add a new user to the database.
+
+    Parameters:
+        email (str): The email of the user.
+        password (str): The plain-text password provided by the user.
+        first_name (str): The first name of the user.
+        last_name (str): The last name of the user.
+
+    Returns:
+        bool: True if the user is added successfully, False otherwise.
+
+    Raises:
+        None
+    """
     conn = sqlite3.connect('dojo.db')
     cursor = conn.cursor()
     hashed_password = generate_password_hash(password)
@@ -83,8 +110,19 @@ def add_user(email, password, first_name, last_name):
     finally:
         conn.close()
 
-
 def get_user_id_by_email(email):
+    """
+    Get the user ID based on the provided email.
+
+    Parameters:
+        email (str): The email of the user.
+
+    Returns:
+        int: The user ID if found, None otherwise.
+
+    Raises:
+        None
+    """
     conn = sqlite3.connect('dojo.db')
     cursor = conn.cursor()
     cursor.execute('SELECT user_id FROM users WHERE email = ?', (email,))
@@ -93,4 +131,13 @@ def get_user_id_by_email(email):
     return result[0] if result else None
 
 def get_db_connection():
+    """
+    Get a connection to the database.
+
+    Returns:
+        Connection: A SQLite database connection.
+
+    Raises:
+        None
+    """
     return sqlite3.connect('dojo.db')
