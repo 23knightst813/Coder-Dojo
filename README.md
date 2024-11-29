@@ -69,3 +69,34 @@ flaskr/
 
 ---
 
+## Known Limitations and Areas for Improvement  
+
+### Scalability  
+- **Limitation**: The application uses SQLite, suitable for small-scale applications but not for handling high traffic or large datasets.  
+- **Improvement**: Consider migrating to a more robust database system like PostgreSQL or MySQL for better scalability and performance.  
+
+### User Authentication  
+- **Limitation**: Lacks advanced security features such as multi-factor authentication (MFA) and account lockout mechanisms.  
+- **Improvement**: Implement additional security measures to protect against brute force attacks.  
+
+### Database Handling  
+- **Limitation**: Database connection and cursor creation are repeated across multiple functions.  
+- **Improvement**: Centralise database handling to reduce redundancy.  
+
+### Error Handling  
+- **Limitation**:  
+  - `add_user` function only catches `sqlite3.IntegrityError`.  
+  - `sign_in` function does not handle database connection failures.  
+- **Improvement**: Improve error handling to cover edge cases.  
+
+### Security  
+- **Limitation**:  
+  - The secret key is hardcoded in `app.py`.  
+- **Improvement**:  
+  - Move the secret key to an environment variable.  
+
+### Input Validation  
+- **Limitation**: Input validation during user registration and support message submission is limited.  
+- **Improvement**: Add stricter validation for user inputs to prevent invalid data entry.  
+
+---
