@@ -1,4 +1,3 @@
-
 # Coder Dojo Web Application  
 
 This web application is designed for a coding club to manage user registrations, bookings, and support messages. It provides a seamless experience for users to register, log in, book activities, manage their profiles, and seek support. Admin users have additional privileges to manage sessions and view support messages.  
@@ -101,3 +100,51 @@ flaskr/
 ### Input Validation  
 - **Limitation**: Input validation during user registration and support message submission is limited.  
 - **Improvement**: Add stricter validation for user inputs to prevent invalid data entry.  
+
+---
+
+## Notable Changes and Their Rationale
+
+### Addition of User Authentication
+
+**What was changed:**
+- Implemented user authentication using email and password.
+- Added password hashing for secure authentication.
+
+**Why the change was necessary:**
+- To ensure that only authorized users can access certain features of the application.
+- To enhance security by protecting user passwords.
+
+**Supporting Evidence:**
+- Password hashing is a standard practice in the industry to protect user credentials.
+- References: [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
+
+### Implementation of Booking System
+
+**What was changed:**
+- Added functionality for users to book activities.
+- Implemented validation for participant selection and activity choices.
+
+**Why the change was necessary:**
+- To allow users to book activities and manage their bookings.
+- To ensure that the booking process is user-friendly and error-free.
+
+**Supporting Evidence:**
+- User feedback indicated a need for a streamlined booking process.
+- References: [Usability.gov - Booking Systems](https://www.usability.gov/what-and-why/booking-systems.html)
+
+### Enhancement of Admin Panel
+
+**What was changed:**
+- Added features for admin users to manage sessions and view support messages.
+- Implemented functionality to add and delete activities.
+
+**Why the change was necessary:**
+- To provide admin users with the tools to manage the application effectively.
+- To ensure that the admin panel is comprehensive and user-friendly.
+
+**Supporting Evidence:**
+- Admin feedback indicated a need for more control over the application.
+- References: [Nielsen Norman Group - Admin Interfaces](https://www.nngroup.com/articles/admin-interfaces/)
+
+For more detailed information, please refer to the [Change Rationale Document](documentation/change_rationale.md).
