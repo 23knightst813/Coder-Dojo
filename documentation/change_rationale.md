@@ -3,12 +3,12 @@
 ### 1 Booking system
 
 **What Changed**
-- Added functionality for users to book activities and cancel bookings, and automaticaly join a waiting list when needed.  
+- Added functionality for users to book activities and cancel bookings, and automatically join a waiting list when needed.  
 - Provided input validation
 - Added activity preferences for the user to select when booking
 
 **Why**
-- The brief states that theres a need for a system to manage bookings since there has abeen a recent influx in booking
+- The brief states that there's a need for a system to manage bookings since there has been a recent influx in booking
 - Activity preferences help organisers prepare resources effectively
 
 ---
@@ -17,12 +17,12 @@
 
 **What Changed**
     - User authentication using email and password.  
-    - Allows users to log in and save their detials
+    - Allows users to log in and save their details
     - Added password hashing for secure storage of credentials.
 
 **Why**
 
-    -The breif states *Create user accounts to speed up the booking process*
+    - The brief states *Create user accounts to speed up the booking process*
 
 ---
 
@@ -39,9 +39,9 @@
 
 ---
 
-## 4 Imporved Error handling and input valadation
+## 4 Improved Error Handling and Input Validation
 
-**What Chaned**
+**What Changed**
 
 - Added error handling for 500 and 405 status codes.
 - Enhanced input validation for various forms, including age validation for participants.
@@ -56,15 +56,13 @@
 
 ---
 
-## 5. Meeting GDPR
+## 5 Meeting GDPR
 
 **What Chaned**
 
 - Implemented a feature allowing users to download their data.  
-- Implimenting a feature allowing users to delete their data.
-
-
+- Implemented a feature allowing users to delete their data.
 
 **Why**
 
-- To meet profesianl guidlines nad leglistalsiton
+- To meet professional guidelines and legislation

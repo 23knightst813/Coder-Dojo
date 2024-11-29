@@ -22,7 +22,7 @@
 ## Other Assets
 - User Profile Image: Head Doodles by Shahnawaz Javed
   - Source: https://dribbble.com/shots/24834842-Head-Doodles
-  - License: Permission granted by Shahnawaz Javed - https://filebin.net/e3vs8dadegje01i0
+  - License: Permission granted by Shahnawaz Javed - https://ibb.co/NKknjbK
   - Credit: Shahnawaz Javed, Dribbble handle: @swzjaved
 
 - Google Maps: Used for displaying maps on the About Me page.
