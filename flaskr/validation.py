@@ -1,5 +1,9 @@
 # validation.py contains functions that validate user input. These functions are used in the routes to validate the input before processing it. The functions are as follows:   
+
+# Import the re module for regular expression operations
 import re
+
+# Import the datetime module for date validation
 from datetime import datetime
 
 def is_not_empty(value):
@@ -12,6 +16,7 @@ def is_not_empty(value):
     Returns:
         bool: True if the value is not empty, False otherwise.
     """
+    # Check if the value is not empty and does not consist of only whitespace
     return bool(value and value.strip())
 
 def is_valid_email(email):
@@ -24,7 +29,9 @@ def is_valid_email(email):
     Returns:
         bool: True if the email address is valid, False otherwise.
     """
+    # Define a regular expression pattern for a valid email address
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    # Check if the email matches the pattern
     return re.match(pattern, email) is not None
 
 def is_valid_date(date_str):
@@ -38,6 +45,7 @@ def is_valid_date(date_str):
         bool: True if the date string is valid, False otherwise.
     """
     try:
+        # Try to parse the date string using the specified format
         datetime.strptime(date_str, '%Y-%m-%d')
         return True
     except ValueError:
@@ -54,6 +62,7 @@ def is_valid_integer(value):
         bool: True if the value is an integer, False otherwise.
     """
     try:
+        # Try to convert the value to an integer
         int(value)
         return True
     except ValueError:
@@ -70,6 +79,7 @@ def is_valid_float(value):
         bool: True if the value is a float, False otherwise.
     """
     try:
+        # Try to convert the value to a float
         float(value)
         return True
     except ValueError:
@@ -88,6 +98,7 @@ def is_within_range(value, min_value, max_value):
         bool: True if the value is within the range, False otherwise.
     """
     try:
+        # Try to convert the value to a float and check if it is within the range
         num = float(value)
         return min_value <= num <= max_value
     except ValueError:
@@ -104,6 +115,7 @@ def is_within_length(value, max_length):
     Returns:
         bool: True if the value is within the length, False otherwise.
     """
+    # Check if the length of the value is within the specified maximum length
     return len(value) <= max_length
 
 def is_secure_password(password):
@@ -116,6 +128,7 @@ def is_secure_password(password):
     Returns:
         bool: True if the password is secure, False otherwise.
     """
+    # Check if the password meets the security criteria
     if len(password) < 8:
         return False
     if not re.search(r'[A-Z]', password):

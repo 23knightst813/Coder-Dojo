@@ -4,9 +4,12 @@
 # Date: 28 November 2024
 # Notes: Implements database schema creation and user management functions.
 
+# Import the sqlite3 module for database operations
 import sqlite3
+# Import the generate_password_hash function from werkzeug.security for password hashing
 from werkzeug.security import generate_password_hash
 
+# Function to set up the database by creating necessary tables
 def setup_db():
     """
     Set up the database by creating necessary tables.
@@ -14,10 +17,12 @@ def setup_db():
     Returns:
         None
     """
+    # Connect to the SQLite database 'dojo.db'
     conn = sqlite3.connect('dojo.db')
+    # Create a cursor object to interact with the database
     cursor = conn.cursor()
     
-    # Create users table
+    # Create the 'users' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +34,7 @@ def setup_db():
         )
     ''')
     
-    # Create participants table
+    # Create the 'participants' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS participants (
             participant_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +45,7 @@ def setup_db():
         )
     ''')
     
-    # Create activities table
+    # Create the 'activities' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS activities (
             activity_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +53,7 @@ def setup_db():
         )
     ''')
     
-    # Create bookings table
+    # Create the 'Bookings' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Bookings (
             booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,6 +72,7 @@ def setup_db():
             FOREIGN KEY (activity3_id) REFERENCES activities(activity_id)
         )
     ''')
+    # Create the 'support' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS support (
             support_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,9 +82,12 @@ def setup_db():
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         )
     ''')
+    # Commit the changes to the database
     conn.commit()
+    # Close the database connection
     conn.close()
 
+# Function to add a new user to the database
 def add_user(email, password, first_name, last_name):
     """
     Add a new user to the database.
@@ -95,21 +104,28 @@ def add_user(email, password, first_name, last_name):
     Raises:
         None
     """
+    # Connect to the SQLite database 'dojo.db'
     conn = sqlite3.connect('dojo.db')
+    # Create a cursor object to interact with the database
     cursor = conn.cursor()
+    # Hash the plain-text password
     hashed_password = generate_password_hash(password)
     try:
+        # Insert the new user into the 'users' table
         cursor.execute('''
             INSERT INTO users (email, password, first_name, last_name)
             VALUES (?, ?, ?, ?)
         ''', (email, hashed_password, first_name, last_name))
+        # Commit the changes to the database
         conn.commit()
         return True
     except sqlite3.IntegrityError:
         return False
     finally:
+        # Close the database connection
         conn.close()
 
+# Function to get the user ID based on the provided email
 def get_user_id_by_email(email):
     """
     Get the user ID based on the provided email.
@@ -123,13 +139,20 @@ def get_user_id_by_email(email):
     Raises:
         None
     """
+    # Connect to the SQLite database 'dojo.db'
     conn = sqlite3.connect('dojo.db')
+    # Create a cursor object to interact with the database
     cursor = conn.cursor()
+    # Execute a query to fetch the user ID based on the provided email
     cursor.execute('SELECT user_id FROM users WHERE email = ?', (email,))
+    # Fetch the result from the query
     result = cursor.fetchone()
+    # Close the database connection
     conn.close()
+    # Return the user ID if found, otherwise return None
     return result[0] if result else None
 
+# Function to get a connection to the database
 def get_db_connection():
     """
     Get a connection to the database.
@@ -140,4 +163,5 @@ def get_db_connection():
     Raises:
         None
     """
+    # Return a connection to the SQLite database 'dojo.db'
     return sqlite3.connect('dojo.db')

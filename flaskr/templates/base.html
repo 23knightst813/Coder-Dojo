@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Meta tags for character set and viewport settings -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
     <title>My Website</title>
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Link to Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&family=Nixie+One&display=swap" rel="stylesheet">
 </head>
   <body>
 
+    <!-- Decorative images for the left and right sides of the page -->
     <img src="{{ url_for('static', filename='BarsLeft.svg') }}" class="bars-left" alt="bars-left">
     <img src="{{ url_for('static', filename='BarsRight.svg') }}" class="bars-right" alt="bars-right">
 
+    <!-- Burger menu button -->
     <img src="{{ url_for('static', filename='Hamburgur.svg') }}" id="burger-button" class="burger-button" style="position: fixed; top: 10px; left: 10px;" tabindex="0" />
 
+    <!-- Burger menu content -->
     <div id="burger-menu" class="burger-fillings">
+      <!-- Profile icon -->
       <img src="{{ url_for('static', filename='profile_icon.svg') }}" alt="Profile Icon" style="width: 108px; height: 133px;" title="Made by Shahnawaz Javed">
       <ul>
         <li>
+          <!-- Display user email or 'Guest' if not logged in -->
           <p class="user-email">
             {% if 'email' in session %}
               {{ session['email'] }}
@@ -28,6 +37,7 @@
             {% endif %}
           </p>
         </li>
+        <!-- Menu links -->
         <li><a href="/edit_profile">EDIT</a></li>
         <li><a href="/support">support</a></li>
         <li><a href="/sessions">my sessions</a></li>
@@ -59,11 +69,13 @@
       {% endif %}
     {% endwith %}
 
+    <!-- Main content block -->
     <main>
       {% block content %}
       {% endblock %}
     </main>
 
+    <!-- JavaScript for burger menu and cookie consent pop-up -->
     <script>
       const burgerButton = document.getElementById('burger-button');
       const burgerMenu = document.getElementById('burger-menu');

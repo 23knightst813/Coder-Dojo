@@ -2,20 +2,24 @@
 
 {% block content %}
 
+<!-- Link to Google Fonts for custom fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Marck+Script&display=swap" rel="stylesheet">
 
-
+<!-- Navigation bar with links to different pages -->
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/" class="navbar-btn">home</a>
   <a href="/logout" class="navbar-btn">logout</a>
 </nav>
 
+<!-- Page heading -->
 <h1 class="head">edit session</h1>
 
+<!-- Form for editing session details -->
 <form method="post" class="form-container">
+  <!-- Participant selection dropdown -->
   <label for="participant_id">Participant:</label>
   <select name="participant_id" id="participant_id" required>
     {% for participant in participants %}
@@ -25,6 +29,7 @@
     {% endfor %}
   </select>
 
+  <!-- Activity 1 selection dropdown -->
   <label for="activity1_id">Activity 1:</label>
   <select name="activity1_id" id="activity1_id" required>
     {% for activity in activities %}
@@ -34,6 +39,7 @@
     {% endfor %}
   </select>
 
+  <!-- Activity 2 selection dropdown -->
   <label for="activity2_id">Activity 2:</label>
   <select name="activity2_id" id="activity2_id" required>
     {% for activity in activities %}
@@ -43,6 +49,7 @@
     {% endfor %}
   </select>
 
+  <!-- Activity 3 selection dropdown -->
   <label for="activity3_id">Activity 3:</label>
   <select name="activity3_id" id="activity3_id" required>
     {% for activity in activities %}
@@ -52,6 +59,7 @@
     {% endfor %}
   </select>
 
+  <!-- Submit button to update session -->
   <button type="submit" class="btn">update session</button>
 </form>
 {% endblock %}

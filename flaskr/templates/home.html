@@ -1,17 +1,16 @@
 {% extends 'base.html' %} {% block content %}
 
-
+<!-- Navigation bar with links to different pages -->
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/booking" class="navbar-btn">booking</a>
   <a href="/login" class="navbar-btn">login</a>
 </nav>
 
-
+<!-- Main title of the page -->
 <h1 class="main-title">coder<br>dojo</h1>
+
+<!-- Display a greeting message with the user's email -->
 <p class="main-body">hello, {{email}}</p>
-
-
-
 
 {% endblock %}

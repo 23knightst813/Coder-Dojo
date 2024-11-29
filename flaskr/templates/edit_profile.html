@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- Navigation bar with links to different pages -->
 <nav>
     <a href="/about" class="navbar-btn">about</a>
     <a href="/" class="navbar-btn">home</a>
     <a href="/logout" class="navbar-btn">logout</a>
 </nav>
 
+<!-- Page heading -->
 <h1 class="head">edit profile</h1>
 
 <!-- User Information Form -->
 <form method="post" action="{{ url_for('edit_profile') }}" class="form-container">
     <h2 class="head">user information</h2>
+    <!-- First name input field -->
     <label for="first_name">first name:</label>
     <input type="text" name="first_name" value="{{ user_info[1] }}" required>
 
+    <!-- Last name input field -->
     <label for="last_name">last name:</label>
     <input type="text" name="last_name" value="{{ user_info[2] }}" required>
 
+    <!-- Password input field -->
     <label for="password">password:</label>
     <input type="password" name="password">
 
+    <!-- Update profile button -->
     <button type="submit" class="btn">update profile</button>
 </form>
 
@@ -29,13 +35,16 @@
 <form method="post" action="{{ url_for('add_participant') }}" class="form-container">
     <div id="new-participants-container">
         <div class="new-participant">
+            <!-- New participant name input field -->
             <label for="new_participant_name">name:</label>
             <input type="text" name="new_participant_name" id="new_participant_name" required>
 
+            <!-- New participant age input field -->
             <label for="new_participant_age">age:</label>
             <input type="number" name="new_participant_age" id="new_participant_age" required>
         </div>
     </div>
+    <!-- Add participant button -->
     <button type="submit" class="btn">add participant</button>
 </form>
 
@@ -46,9 +55,11 @@
         <div class="session-item">
             <h2>participant id: {{ participant[0] }}</h2>
             <div class="session-info">
+                <!-- Participant name input field -->
                 <label for="participant_name_{{ loop.index }}">name:</label>
                 <input type="text" name="participant_name" id="participant_name_{{ loop.index }}" value="{{ participant[1] }}" required>
 
+                <!-- Participant age input field -->
                 <label for="participant_age_{{ loop.index }}">age:</label>
                 <input type="number" name="participant_age" id="participant_age_{{ loop.index }}" value="{{ participant[2] }}" required>
             </div>

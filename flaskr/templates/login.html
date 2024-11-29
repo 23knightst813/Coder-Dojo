@@ -1,25 +1,39 @@
 {% extends 'base.html' %} {% block content %}
 
+<!-- Navigation bar with links to different pages -->
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/" class="navbar-btn">home</a>
   <a href="/login" class="navbar-btn">login</a>
 </nav>
 
+<!-- Page heading -->
 <h1 class="head">login</h1>
+
+<!-- Login form -->
 <form class="form-container" action="/login" method="post">
+  <!-- Email input field -->
   <label for="email">email:</label><br />
   <input type="email" id="email" name="email" required /><br />
+  
+  <!-- Password input field -->
   <label for="password">password:</label><br />
   <input type="password" id="password" name="password" required /><br />
+  
   <br />
   <br />
+  
+  <!-- Login button -->
   <button type="submit" class="btn">login</button>
+  
   <br />
   <br />
+  
+  <!-- Register button -->
   <a href="/register" class="btn">register</a>
 </form>
 
+<!-- Flash messages -->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class="flashes">

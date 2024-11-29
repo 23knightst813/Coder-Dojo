@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Navigation bar with links to different pages -->
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/booking" class="navbar-btn">booking</a>
   <a href="/logout" class="navbar-btn">logout</a>
 </nav>
 
+<!-- Page heading -->
 <h1 class="head">my sessions</h1>
 
+<!-- Container for displaying user sessions -->
 <div class="session-container">
   {% if bookings %}
     <div class="session-list">
@@ -35,7 +38,7 @@
                 <p>this session is on overflow. you will be notified if a spot becomes available.</p>
               </div>
             {% endif %}
-            <!-- Fix: Use booking['booking_id'] instead of session['booking_id'] -->
+            <!-- Form for deleting a session -->
             <form method="post" action="{{ url_for('delete_session', booking_id=booking['booking_id']) }}">
               <button type="submit" class="btn">delete</button>
             </form>

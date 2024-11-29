@@ -2,12 +2,14 @@
 
 {% block content %}
 
+<!-- Navigation bar with links to different pages -->
 <nav>
     <a href="/about" class="navbar-btn">about</a>
     <a href="/" class="navbar-btn">home</a>
     <a href="/login" class="navbar-btn">login</a>
 </nav>
 
+<!-- Booking form heading -->
 <div class="head">
     <h1>make a booking</h1>
     <div class="head-text"></div>
@@ -16,6 +18,7 @@
     </div>
 </div>
 
+<!-- Booking form -->
 <form method="post" class="form-container" >
     <!-- Participant Dropdown -->
     <label for="participant">select participant:</label>
@@ -73,6 +76,7 @@
     <button type="submit" class="btn">submit booking</button>
 </form>
 
+<!-- JavaScript function to toggle the new participant form -->
 <script>
     function toggleNewParticipantForm(value) {
         const form = document.getElementById('newParticipantForm');

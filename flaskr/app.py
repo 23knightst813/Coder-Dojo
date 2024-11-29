@@ -1,4 +1,6 @@
 # app.py
+
+# Import necessary modules from Flask and other libraries
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -7,13 +9,16 @@ import shutil
 from datetime import datetime
 import csv
 
+# Import custom validation functions and database functions
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
+# Initialize the Flask application
 app = Flask(__name__)
-app.secret_key = 'RaheeshSucks'
+app.secret_key = 'RaheeshSucks'  # Secret key for session management
 
+# Define the home route
 @app.route("/")
 def home():
     email = "Guest"
@@ -27,7 +32,7 @@ def home():
 
     return response
 
-
+# Define the register route
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -37,6 +42,7 @@ def register():
         last_name = request.form['last_name']
         password_confirm = request.form['password_confirm']
 
+        # Validate input fields
         if not all([is_not_empty(email), is_not_empty(password), is_not_empty(first_name), is_not_empty(last_name)]):
             flash("All fields are required", "error")
             return redirect("/register")
@@ -65,6 +71,7 @@ def register():
         return sign_in(email, password)
     return render_template("register.html")
 
+# Define the login route
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -74,15 +81,18 @@ def login():
 
     return render_template("login.html")
 
+# Define the logout route
 @app.route("/logout")
 def logout_route():
     logout()  
     return redirect(url_for("home"))
 
+# Define the about route
 @app.route("/about")
 def about():
     return render_template("about.html")
 
+# Define the support route
 @app.route("/support", methods=["GET", "POST"])
 def support():
     if request.method == "POST":
@@ -108,6 +118,7 @@ def support():
 
     return render_template("support.html")
 
+# Define the booking route
 @app.route('/booking', methods=['GET', 'POST'])
 def booking():
     if 'email' not in session:
@@ -228,6 +239,7 @@ def booking():
         conn.close()
         return render_template('booking.html', participants=participants, activities=activities)
 
+# Define the edit_profile route
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
     if 'email' not in session:
@@ -272,6 +284,7 @@ def edit_profile():
 
     return render_template('edit_profile.html', user_info=user_data, participant_info=participants)
 
+# Define the sessions route
 @app.route('/sessions')
 def sessions():
     if 'email' not in session:
@@ -318,7 +331,7 @@ def sessions():
     conn.close()
     return render_template('sessions.html', bookings=bookings)
 
-
+# Define the add_activity route for admin
 @app.route('/admin/add_activity', methods=['POST'])
 def add_activity():
     if 'email' not in session or not session.get('is_admin'):
@@ -335,6 +348,7 @@ def add_activity():
     flash('Activity added successfully!', 'success')
     return redirect(url_for('admin'))
 
+# Define the admin route
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if "email" not in session:
@@ -399,6 +413,7 @@ def admin():
         flash("Access denied: Admin privileges required", "error")
         return redirect("/")
 
+# Define the delete_activity route for admin
 @app.route('/admin/delete_activity/<int:activity_id>', methods=['POST'])
 def delete_activity(activity_id):
     if 'email' not in session or not session.get('is_admin'):
@@ -414,6 +429,7 @@ def delete_activity(activity_id):
     flash('Activity deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
+# Define the edit_session route for admin
 @app.route('/admin/edit_session/<int:booking_id>', methods=['GET', 'POST'])
 def edit_session(booking_id):
     if 'email' not in session or not session.get('is_admin'):
@@ -465,6 +481,7 @@ def edit_session(booking_id):
     conn.close()
     return render_template('edit_session.html', session_data=session_data, participants=participants, activities=activities)
 
+# Define the delete_session route
 @app.route('/admin/delete_session/<int:booking_id>', methods=['POST'])
 def delete_session(booking_id):
     if 'email' not in session:
@@ -504,6 +521,7 @@ def delete_session(booking_id):
     flash('Session deleted successfully!', 'success')
     return redirect(url_for('admin' if session.get('is_admin') else 'sessions'))
 
+# Define the delete_support route for admin
 @app.route('/admin/delete_support/<int:support_id>', methods=['POST'])
 def delete_support(support_id):
     if 'email' not in session or not session.get('is_admin'):
@@ -519,7 +537,7 @@ def delete_support(support_id):
     flash('Support message deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
-
+# Define the backup_database route for admin
 @app.route('/admin/backup_database', methods=['POST'])
 def backup_database():
     if 'email' not in session or not session.get('is_admin'):
@@ -541,7 +559,7 @@ def backup_database():
 
     return redirect(url_for('admin'))
 
-
+# Define the download_data route
 @app.route('/download_data')
 def download_data():
     if 'email' not in session:
@@ -582,6 +600,7 @@ def download_data():
         download_name='user_data.csv'
     )
 
+# Define the add_participant route
 @app.route('/add_participant', methods=['POST'])
 def add_participant():
     if 'email' not in session:
@@ -616,6 +635,7 @@ def add_participant():
     flash('Participant added successfully!', 'success')
     return redirect(url_for('edit_profile'))
 
+# Define the delete_account route
 @app.route('/delete_account', methods=['POST'])
 def delete_account():
     if 'email' not in session:
@@ -646,6 +666,7 @@ def delete_account():
         flash('Incorrect password. Please try again.', 'error')
         return redirect(url_for('edit_profile'))
 
+# Define error handlers for various HTTP status codes
 @app.errorhandler(404)
 def page_not_found(e):
     flash('Page not found', 'error')
@@ -681,6 +702,7 @@ def request_entity_too_large(e):
     flash('Request entity too large', 'error')
     return redirect("/")
 
+# Define the status route for admin
 @app.route('/status', methods=['POST'])
 def status():
     messages = []
@@ -712,12 +734,14 @@ def status():
 
     return redirect(url_for('admin'))
 
+# Define the set_cookie route
 @app.route('/set_cookie', methods=['POST'])
 def set_cookie():
     response = make_response(redirect(url_for('home')))
     response.set_cookie('cookie_consent', 'true', max_age=60*60*24*365)  # 1 year
     return response
 
+# Define the download route
 @app.route('/download')
 def download():
     return send_file(
@@ -726,6 +750,7 @@ def download():
         as_attachment=True
     )
 
+# Main entry point of the application
 if __name__ == '__main__':
     setup_db()
     app.run(debug=True)

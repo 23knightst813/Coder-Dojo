@@ -1,4 +1,6 @@
 /* style.css */
+
+/* Burger menu container */
 .burger-fillings {
   display: none;
   position: absolute;
@@ -13,52 +15,76 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
+
+/* User email text style */
 .user-email {
   font-family: 'Marck Script', cursive;
 }
+
+/* Active state for burger menu */
 .burger-fillings.active {
   display: flex;
   color: white;
   z-index: 1000; 
 }
+
+/* Hide burger button when menu is active */
 .burger-fillings.active ~ .burger-button {
   display: none;
 }
+
+/* New participant form container */
 #newParticipantForm {
   border: 1px solid #ccc;
   padding: 15px;
   margin-top: 10px;
 }
+
+/* User email text style within burger menu */
 .burger-fillings .user-email {
   font-family: 'Marck Script', cursive;
 }
+
+/* Burger button style */
 .burger-button {
   cursor: pointer;
   width: 30px;
   height: 30px;
   z-index: 1001; /* Add this line */
 }
+
+/* Burger menu list style */
 .burger-fillings ul {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
 }
+
+/* Burger menu list item style */
 .burger-fillings ul li {
   margin: 15px 0;
   text-align: center;
 }
+
+/* General text color for burger menu */
 .burger-fillings * {
   color: white;
 }
+
+/* Burger menu link style */
 .burger-fillings a {
   text-decoration: none;
 }
+
+/* General font style */
 * {
   font-family: "Major Mono Display", serif;
   font-weight: 400;
   font-style: normal;
 }
+
+/* Navbar button style */
 .navbar-btn {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.17);
@@ -74,17 +100,25 @@
   font-family: 'Major Mono Display', monospace;
   letter-spacing: 5px;
 }
+
+/* Navbar button hover effect */
 .navbar-btn:hover {
   background-color: #e0e0e0;
 }
+
+/* Navbar container style */
 nav {
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
+
+/* Navbar button margin */
 .navbar-btn {
   margin: 0 10px;
 }
+
+/* General button style */
 .btn {
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.17);
@@ -98,12 +132,18 @@ nav {
   cursor: pointer;
   border-radius: 4px;
 }
+
+/* Button hover effect */
 .btn:hover {
   background-color: #e0e0e0;
 }
+
+/* Body background style */
 body {
   background: radial-gradient(circle, hsla(0, 0%, 92%, 1) 0%, hsla(0, 8%, 95%, 1));
 }
+
+/* Form container style */
 .form-container {
   max-width: 500px;
   margin: auto;
@@ -111,11 +151,15 @@ body {
   text-align: center;
   margin-top: -30px;
 }
+
+/* Form container heading style */
 .form-container h2 {
   font-size: 40px;
   letter-spacing: 5px;
   margin-bottom: 20px;
 }
+
+/* Form input and select style */
 .form-container input[type="text"],
 .form-container input[type="password"],
 .form-container input[type="email"],
@@ -129,22 +173,30 @@ body {
   font-size: 18px;
   font-family: "Nixie One", system-ui;
 }
+
+/* Form label style */
 .form-container label {
   font-size: 16px;
   display: block;
   margin-top: 15px;
 }
+
+/* Form container heading style */
 .form-container h2 {
   font-size: 40px;
   letter-spacing: 5px;
   margin-bottom: 20px;
   text-align: center;
 }
+
+/* Header style */
 .head {
   text-align: center;
   width: 100%;
   padding: 20px 0;
 }
+
+/* Left bars image style */
 .bars-left, .bars-right {
   position: fixed;
   top: 50%;
@@ -154,14 +206,19 @@ body {
   z-index: -1;
   pointer-events: none;
 }
+
+/* Left bars image padding */
 .bars-left {
   left: 0;
   padding: 125px;
 }
+
+/* Right bars image padding */
 .bars-right {
   right: 0;
   padding: 120px;
 }
+
 /* Style the new participant form */
 #newParticipantForm {
   border: 1px solid #ccc;
@@ -171,13 +228,19 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
+/* New participant form heading style */
 #newParticipantForm h3 {
   margin-bottom: 15px;
 }
+
+/* New participant form label style */
 #newParticipantForm label {
   font-size: 16px;
   margin-top: 10px;
 }
+
+/* New participant form input style */
 #newParticipantForm input[type="text"],
 #newParticipantForm input[type="number"] {
   width: 80%;
@@ -186,10 +249,14 @@ body {
   font-size: 16px;
   border-radius: 4px;
 }
+
+/* New participant form button style */
 #newParticipantForm .btn {
   margin-top: 20px;
   width: auto;
 }
+
+/* Flash messages container style */
 .flashes {
   position: fixed;
   top: 20px;
@@ -200,6 +267,8 @@ body {
   padding: 0;
   margin: 0;
 }
+
+/* Flash message item style */
 .flashes li {
   background-color: rgba(255, 255, 255, 0.95);
   color: #333;
@@ -213,15 +282,23 @@ body {
   text-align: left;
   animation: slide-in-out 4s ease-in-out forwards;
 }
+
+/* Flash message success style */
 .flashes li.success {
   border-color: #6FCF97; /* Green for success */
 }
+
+/* Flash message error style */
 .flashes li.error {
   border-color: #EB5757; /* Red for error */
 }
+
+/* Flash message info style */
 .flashes li.info {
   border-color: #2D9CDB; /* Blue for info */
 }
+
+/* Flash message animation */
 @keyframes slide-in-out {
   0% {
     opacity: 0;
@@ -236,6 +313,8 @@ body {
     transform: translateY(-20px);
   }
 }
+
+/* Main title style */
 .main-title {
   text-align: center;
   font-size: 128px;
@@ -246,12 +325,16 @@ body {
   width: 100%;
   color: #737373;
 }
+
+/* Main body text style */
 .main-body {
   text-align: center;
   position: absolute;
   top: 65%;
   left: 50%;
 }
+
+/* Map container style */
 .map-container {
   max-width: 600px;
   margin: 20px auto;
@@ -259,12 +342,16 @@ body {
   overflow: hidden;
   margin-top: 75px;
 }
+
+/* Iframe style */
 iframe {
   display: block;
   width: 100%;
   height: 450px;
   border: none;
 }
+
+/* Text box style */
 .text-box {
   background-color: #B5D0D0;
   padding: 20px;
@@ -276,10 +363,14 @@ iframe {
   max-width: 80%;
   height: auto; 
 }
+
+/* Text box paragraph style */
 .text-box p {
   margin: 0;
   line-height: 1.6;
 }
+
+/* Session container style */
 .session-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -288,6 +379,8 @@ iframe {
   margin: 40px auto;
   padding: 0 20px;
 }
+
+/* Session list style */
 .session-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -295,6 +388,8 @@ iframe {
   margin: 0;
   padding: 0;
 }
+
+/* Session item style */
 .session-item {
   background-color: #ffffff;
   padding: 25px;
@@ -305,32 +400,46 @@ iframe {
   flex-direction: column;
   gap: 12px;
 }
+
+/* Session item hover effect */
 .session-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
+
+/* Session item heading style */
 .session-item h2 {
   font-size: 1.25rem;
   margin: 0;
   padding-bottom: 12px;
   border-bottom: 1px solid #eee;
 }
+
+/* Session info container style */
 .session-info {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
+/* Session info paragraph style */
 .session-info p {
   margin: 0;
   line-height: 1.4;
 }
+
+/* Activities list style */
 .activities-list {
   padding-left: 20px;
   margin: 8px 0;
 }
+
+/* Activities list item style */
 .activities-list li {
   margin: 4px 0;
 }
+
+/* Overflow notice style */
 .overflow-notice {
   margin-top: auto;
   padding: 8px;
@@ -339,6 +448,8 @@ iframe {
   font-style: italic;
   color: #856404;
 }
+
+/* Textarea style */
 textarea {
   width: 100%;
   padding: 12px;
@@ -350,6 +461,7 @@ textarea {
   resize: vertical;
 }
 
+/* Responsive styles for small screens */
 @media (max-width: 600px) {
   nav {
     flex-direction: column;
@@ -370,6 +482,7 @@ textarea {
   }
 }
 
+/* Cookie consent pop-up style */
 .cookie-consent {
   position: fixed;
   bottom: 0;
@@ -382,12 +495,14 @@ textarea {
   z-index: 1000;
 }
 
+/* Cookie consent paragraph style */
 .cookie-consent p {
   margin: 0;
   padding: 0;
   display: inline;
 }
 
+/* Cookie consent button style */
 .cookie-consent .btn {
   background-color: #4CAF50;
   color: white;
@@ -398,6 +513,7 @@ textarea {
   border-radius: 5px;
 }
 
+/* Cookie consent button hover effect */
 .cookie-consent .btn:hover {
   background-color: #45a049;
 }
@@ -409,23 +525,27 @@ textarea {
   padding: 20px;
 }
 
+/* Manage activities heading style */
 .activity-container .head {
   text-align: center;
   font-size: 28px;
   margin-bottom: 30px;
 }
 
+/* Manage activities form style */
 .activity-container form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Manage activities label style */
 .activity-container label {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
+/* Manage activities input style */
 .activity-container input[type="text"] {
   width: 100%;
   max-width: 400px;
@@ -436,15 +556,18 @@ textarea {
   font-size: 16px;
 }
 
+/* Manage activities button style */
 .activity-container button.btn {
   margin-top: 10px;
 }
 
+/* Activities list style */
 .activities-list {
   list-style: none;
   padding: 0;
 }
 
+/* Activities list item style */
 .activities-list li {
   display: flex;
   justify-content: space-between;
@@ -454,16 +577,18 @@ textarea {
   font-size: 18px;
 }
 
+/* Activities list item form style */
 .activities-list li form {
   margin: 0;
 }
 
+/* Activities list item button style */
 .activities-list li button.btn {
   font-size: 14px;
   padding: 6px 12px;
 }
 
-/* style.css */
+/* Modal style */
 .modal {
   display: none;
   position: fixed;
@@ -476,6 +601,7 @@ textarea {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+/* Modal content style */
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto;
@@ -486,6 +612,7 @@ textarea {
   text-align: center;
 }
 
+/* Close button style */
 .close {
   color: #aaa;
   float: right;
@@ -493,6 +620,7 @@ textarea {
   font-weight: bold;
 }
 
+/* Close button hover and focus effect */
 .close:hover,
 .close:focus {
   color: black;
@@ -500,6 +628,7 @@ textarea {
   cursor: pointer;
 }
 
+/* Session container style */
 .session-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -509,6 +638,7 @@ textarea {
   padding: 0 20px;
 }
 
+/* Session item style */
 .session-item {
   background-color: #ffffff;
   padding: 25px;
@@ -520,11 +650,13 @@ textarea {
   gap: 12px;
 }
 
+/* Session item hover effect */
 .session-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
+/* Session item heading style */
 .session-item h2 {
   font-size: 1.25rem;
   margin: 0;
@@ -532,17 +664,20 @@ textarea {
   border-bottom: 1px solid #eee;
 }
 
+/* Session info container style */
 .session-info {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
+/* Session info label style */
 .session-info label {
   font-size: 16px;
   margin-top: 10px;
 }
 
+/* Session info input style */
 .session-info input[type="text"],
 .session-info input[type="number"] {
   width: 100%;

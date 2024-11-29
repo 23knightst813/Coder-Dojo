@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-
+<!-- Navigation bar with links to different pages -->
 <nav>
   <a href="/about" class="navbar-btn">about</a>
   <a href="/" class="navbar-btn">home</a>
@@ -11,16 +11,23 @@
   <title>register</title>
 </head>
 <body>
+  <!-- Registration form heading -->
   <h2 class="head">register</h2>
+  <!-- Registration form -->
   <form class="form-container" action="/register" method="post">
+    <!-- Email input field -->
     <label for="email">email:</label><br />
     <input type="email" id="email" name="email" required /><br />
+    <!-- Password input field -->
     <label for="password">password:</label><br />
     <input type="password" id="password" name="password" required /><br />
+    <!-- First name input field -->
     <label for="first_name">first name:</label><br />
     <input type="text" id="first_name" name="first_name" required /><br />
+    <!-- Last name input field -->
     <label for="last_name">last name:</label><br />
     <input type="text" id="last_name" name="last_name" required /><br />
+    <!-- Confirm password input field -->
     <label for="password_confirm">confirm password:</label><br />
     <input
       type="password"
@@ -29,6 +36,7 @@
       required
     /><br />
     <br />
+    <!-- Register button -->
     <button class="btn" type="submit">register</button>
   </form>
 </body>
