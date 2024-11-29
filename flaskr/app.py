@@ -263,9 +263,14 @@ def edit_profile():
     # For GET request, fetch the current user data to pre-fill the form
     cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
     user_data = cursor.fetchone()
+
+    # Fetch participants for the user
+    cursor.execute('SELECT participant_id, name, age FROM participants WHERE user_id = ?', (user_id,))
+    participants = cursor.fetchall()
+
     conn.close()
 
-    return render_template('edit_profile.html', user_info=user_data)
+    return render_template('edit_profile.html', user_info=user_data, participant_info=participants)
 
 @app.route('/sessions')
 def sessions():
