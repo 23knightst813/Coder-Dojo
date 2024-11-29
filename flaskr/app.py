@@ -106,6 +106,7 @@ def support():
 
         conn = get_db_connection()
         cursor = conn.cursor()
+        # Insert support message into the database
         cursor.execute(
             "INSERT INTO support (user_id, support) VALUES (?, ?)",
             (user_id, f"{subject}: {message}")
@@ -160,6 +161,7 @@ def booking():
                     flash('Participant age must be between 7 and 17.', 'error')
                     return redirect(url_for('booking'))
                 
+                # Insert new participant into the database
                 cursor.execute(
                     "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
                     (user_id, name, age)
@@ -193,6 +195,7 @@ def booking():
 
             # Get user ID and create the booking
             user_id = get_user_id_by_email(session['email'])
+            # Insert new booking into the database
             cursor.execute(
                 """INSERT INTO Bookings 
                    (user_id, participant_id, activity1_id, activity2_id, activity3_id) 
@@ -341,6 +344,7 @@ def add_activity():
     activity_name = request.form['activity_name']
     conn = get_db_connection()
     cursor = conn.cursor()
+    # Insert new activity into the database
     cursor.execute('INSERT INTO activities (activity_name) VALUES (?)', (activity_name,))
     conn.commit()
     conn.close()
@@ -422,6 +426,7 @@ def delete_activity(activity_id):
 
     conn = get_db_connection()
     cursor = conn.cursor()
+    # Delete activity from the database
     cursor.execute('DELETE FROM activities WHERE activity_id = ?', (activity_id,))
     conn.commit()
     conn.close()
@@ -445,6 +450,7 @@ def edit_session(booking_id):
         activity2_id = request.form.get('activity2_id')
         activity3_id = request.form.get('activity3_id')
 
+        # Update session details in the database
         cursor.execute('''
             UPDATE bookings
             SET participant_id = ?, activity1_id = ?, activity2_id = ?, activity3_id = ?
@@ -530,6 +536,7 @@ def delete_support(support_id):
 
     conn = get_db_connection()
     cursor = conn.cursor()
+    # Delete support message from the database
     cursor.execute('DELETE FROM support WHERE support_id = ?', (support_id,))
     conn.commit()
     conn.close()
@@ -625,6 +632,7 @@ def add_participant():
 
     conn = get_db_connection()
     cursor = conn.cursor()
+    # Insert new participant into the database
     cursor.execute(
         "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
         (user_id, name, age)
