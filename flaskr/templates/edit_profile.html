@@ -9,8 +9,9 @@
 
 <h1 class="head">edit profile</h1>
 
-<form method="post" class="form-container">
-    <h2>user information</h2>
+<!-- User Information Form -->
+<form method="post" action="{{ url_for('edit_profile') }}" class="form-container">
+    <h2 class="head">user information</h2>
     <label for="first_name">first name:</label>
     <input type="text" name="first_name" value="{{ user_info[1] }}" required>
 
@@ -18,73 +19,37 @@
     <input type="text" name="last_name" value="{{ user_info[2] }}" required>
 
     <label for="password">password:</label>
-    <input type="password" name="password" required>
+    <input type="password" name="password">
 
-    <h2>participants</h2>
-    {% for participant in participant_info %}
-        <div class="participant">
-            <input type="hidden" name="participant_id" value="{{ participant[0] }}">
-            <label for="participant_name_{{ loop.index }}">name:</label>
-            <input type="text" name="participant_name" id="participant_name_{{ loop.index }}" value="{{ participant[1] }}" required>
-
-            <label for="participant_age_{{ loop.index }}">age:</label>
-            <input type="number" name="participant_age" id="participant_age_{{ loop.index }}" value="{{ participant[2] }}" required>
-        </div>
-    {% endfor %}
-
-    <h2>add new participants</h2>
-    <div id="new-participants-container">
-        <div class="new-participant">
-            <label for="new_participant_name_1">name:</label>
-            <input type="text" name="new_participant_name" id="new_participant_name_1">
-
-            <label for="new_participant_age_1">age:</label>
-            <input type="number" name="new_participant_age" id="new_participant_age_1">
-        </div>
-    </div>
-
-    <button type="button" onclick="addNewParticipant()" class="btn">new participant</button>
-    <br>
     <button type="submit" class="btn">update profile</button>
 </form>
 
-<div style="text-align: center; margin-top: 20px;">
-    <a href="{{ url_for('download_data') }}" class="btn">download my data</a>
-</div>
+<!-- Participant Addition Form -->
+<h2 class="head">add new participants</h2>
+<form method="post" action="{{ url_for('add_participant') }}" class="form-container">
+    <div id="new-participants-container">
+        <div class="new-participant">
+            <label for="new_participant_name">name:</label>
+            <input type="text" name="new_participant_name" id="new_participant_name" required>
 
-<script>
-    function addNewParticipant() {
-        const container = document.getElementById('new-participants-container');
-        const count = container.children.length + 1;
+            <label for="new_participant_age">age:</label>
+            <input type="number" name="new_participant_age" id="new_participant_age" required>
+        </div>
+    </div>
+    <button type="submit" class="btn">add participant</button>
+</form>
 
-        const participantDiv = document.createElement('div');
-        participantDiv.className = 'new-participant';
+<!-- Existing Participants -->
+<h2 class="head">participants</h2>
+{% for participant in participant_info %}
+    <div class="participant">
+        <input type="hidden" name="participant_id" value="{{ participant[0] }}">
+        <label for="participant_name_{{ loop.index }}">name:</label>
+        <input type="text" name="participant_name" id="participant_name_{{ loop.index }}" value="{{ participant[1] }}" required>
 
-        const nameLabel = document.createElement('label');
-        nameLabel.setAttribute('for', `new_participant_name_${count}`);
-        nameLabel.textContent = 'Name:';
-
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.name = 'new_participant_name';
-        nameInput.id = `new_participant_name_${count}`;
-
-        const ageLabel = document.createElement('label');
-        ageLabel.setAttribute('for', `new_participant_age_${count}`);
-        ageLabel.textContent = 'Age:';
-
-        const ageInput = document.createElement('input');
-        ageInput.type = 'number';
-        ageInput.name = 'new_participant_age';
-        ageInput.id = `new_participant_age_${count}`;
-
-        participantDiv.appendChild(nameLabel);
-        participantDiv.appendChild(nameInput);
-        participantDiv.appendChild(ageLabel);
-        participantDiv.appendChild(ageInput);
-
-        container.appendChild(participantDiv);
-    }
-</script>
+        <label for="participant_age_{{ loop.index }}">age:</label>
+        <input type="number" name="participant_age" id="participant_age_{{ loop.index }}" value="{{ participant[2] }}" required>
+    </div>
+{% endfor %}
 
 {% endblock %}

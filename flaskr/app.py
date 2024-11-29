@@ -1,6 +1,6 @@
 # app.py
 from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import io
 import shutil
@@ -577,6 +577,69 @@ def download_data():
         download_name='user_data.csv'
     )
 
+@app.route('/add_participant', methods=['POST'])
+def add_participant():
+    if 'email' not in session:
+        flash('Please log in to add a participant.', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = get_user_id_by_email(session['email'])
+    name = request.form['new_participant_name']
+    age = request.form['new_participant_age']
+
+    if not name or not age:
+        flash('Please provide both name and age for the new participant.', 'warning')
+        return redirect(url_for('edit_profile'))
+
+    try:
+        age = int(age)
+        if age < 7 or age > 17:
+            raise ValueError
+    except ValueError:
+        flash('Participant age must be between 7 and 17.', 'error')
+        return redirect(url_for('edit_profile'))
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)",
+        (user_id, name, age)
+    )
+    conn.commit()
+    conn.close()
+
+    flash('Participant added successfully!', 'success')
+    return redirect(url_for('edit_profile'))
+
+@app.route('/delete_account', methods=['POST'])
+def delete_account():
+    if 'email' not in session:
+        flash('Please log in to delete your account.', 'warning')
+        return redirect(url_for('login'))
+
+    user_id = get_user_id_by_email(session['email'])
+    password = request.form['delete_password']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT password FROM users WHERE user_id = ?', (user_id,))
+    user = cursor.fetchone()
+
+    if user and check_password_hash(user[0], password):
+        # Delete user-related data
+        cursor.execute('DELETE FROM bookings WHERE user_id = ?', (user_id,))
+        cursor.execute('DELETE FROM participants WHERE user_id = ?', (user_id,))
+        cursor.execute('DELETE FROM support WHERE user_id = ?', (user_id,))
+        cursor.execute('DELETE FROM users WHERE user_id = ?', (user_id,))
+        conn.commit()
+        conn.close()
+
+        session.clear()
+        flash('Your account has been deleted successfully.', 'success')
+        return redirect(url_for('home'))
+    else:
+        flash('Incorrect password. Please try again.', 'error')
+        return redirect(url_for('edit_profile'))
 
 @app.errorhandler(404)
 def page_not_found(e):
