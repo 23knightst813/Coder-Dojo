@@ -41,15 +41,18 @@
 
 <!-- Existing Participants -->
 <h2 class="head">participants</h2>
-{% for participant in participant_info %}
-    <div class="participant">
-        <input type="hidden" name="participant_id" value="{{ participant[0] }}">
-        <label for="participant_name_{{ loop.index }}">name:</label>
-        <input type="text" name="participant_name" id="participant_name_{{ loop.index }}" value="{{ participant[1] }}" required>
+<div class="session-container">
+    {% for participant in participant_info %}
+        <div class="session-item">
+            <h2>participant id: {{ participant[0] }}</h2>
+            <div class="session-info">
+                <label for="participant_name_{{ loop.index }}">name:</label>
+                <input type="text" name="participant_name" id="participant_name_{{ loop.index }}" value="{{ participant[1] }}" required>
 
-        <label for="participant_age_{{ loop.index }}">age:</label>
-        <input type="number" name="participant_age" id="participant_age_{{ loop.index }}" value="{{ participant[2] }}" required>
-    </div>
-{% endfor %}
-
+                <label for="participant_age_{{ loop.index }}">age:</label>
+                <input type="number" name="participant_age" id="participant_age_{{ loop.index }}" value="{{ participant[2] }}" required>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

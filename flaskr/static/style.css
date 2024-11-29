@@ -499,3 +499,59 @@ textarea {
   text-decoration: none;
   cursor: pointer;
 }
+
+.session-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.session-item {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.session-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.session-item h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.session-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.session-info label {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.session-info input[type="text"],
+.session-info input[type="number"] {
+  width: 100%;
+  max-width: 300px; 
+  padding: 8px;
+  margin: 10px auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Nixie One", system-ui;
+  display: block; 
+}
