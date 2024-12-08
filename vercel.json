@@ -4,9 +4,7 @@
     {
       "src": "flaskr/app.py",
       "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb"
-      }
+      "config": { "maxLambdaSize": "15mb" }
     }
   ],
   "routes": [
@@ -14,11 +12,5 @@
       "src": "/(.*)",
       "dest": "flaskr/app.py"
     }
-  ],
-  "build": {
-    "env": {
-      "PIPENV_VERBOSITY": "-1"
-    },
-    "install": "pip install -r flaskr/requirements.txt"
-  }
+  ]
 }
