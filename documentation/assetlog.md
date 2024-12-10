@@ -28,3 +28,7 @@
 - Google Maps: Used for displaying maps on the About Me page.
   - Source: https://developers.google.com/maps
   - License: Google Maps/Google Earth APIs Terms of Service
+
+- Favicon
+  - Source:  https://ailogomaker.io/app
+  - License: Intellectual Property

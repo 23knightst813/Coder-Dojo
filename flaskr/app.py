@@ -1,7 +1,7 @@
 # app.py
 
 # Import necessary modules from Flask and other libraries
-from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file
+from flask import Flask, redirect, render_template, request, session, url_for, flash, make_response, send_file, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import io
@@ -20,6 +20,12 @@ app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'  # Secret key for session management
 # Configure logging
 logging.basicConfig(level=logging.INFO)
+
+#favicon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Define the home route
 @app.route("/")
