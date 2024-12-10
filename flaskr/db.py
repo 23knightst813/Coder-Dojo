@@ -155,6 +155,14 @@ def setup_db():
         (1, 'Issue resolved', datetime.datetime.now())
     ])
 
+    # Update existing users to use pbkdf2:sha256
+    cursor.execute('SELECT user_id, password FROM users')
+    users = cursor.fetchall()
+    for user_id, password in users:
+        if password.startswith('scrypt:'):
+            new_password = generate_password_hash(password, method='pbkdf2:sha256')
+            cursor.execute('UPDATE users SET password = ? WHERE user_id = ?', (new_password, user_id))
+
     # Commit the changes to the database
     conn.commit()
     # Close the database connection

@@ -8,6 +8,7 @@ import io
 import shutil
 from datetime import datetime
 import csv
+import logging
 
 # Import custom validation functions and database functions
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
@@ -17,6 +18,8 @@ from auth import sign_in, logout
 # Initialize the Flask application
 app = Flask(__name__)
 app.secret_key = 'RaheeshSucks'  # Secret key for session management
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Define the home route
 @app.route("/")
@@ -677,8 +680,9 @@ def delete_account():
 # Define error handlers for various HTTP status codes
 @app.errorhandler(404)
 def page_not_found(e):
+    logging.info(f"404 error: {request.url}")
     flash('Page not found', 'error')
-    return redirect("/")    
+    return redirect(url_for('home'))  
 
 @app.errorhandler(500)
 def internal_server_error(e):
