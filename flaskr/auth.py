@@ -31,15 +31,21 @@ def sign_in(email, password):
     user = cur.fetchone()  # Fetch the first result from the query
     conn.close()  # Close the database connection
 
-    if user and check_password_hash(user[1], password):  # Check if user exists and password is correct
-        session["email"] = user[0]  # Store the user's email in the session
-        session["is_admin"] = bool(user[2])  # Store the user's admin status in the session
-        if session["is_admin"]:  # If the user is an admin, redirect to the admin page
-            return redirect("/admin")
-        return redirect("/")  # Otherwise, redirect to the home page
+    if user:
+        print(f"User found: {user[0]}, Hashed Password: {user[1]}")  # Debug statement
+        if check_password_hash(user[1], password):  # Check if user exists and password is correct
+            session["email"] = user[0]  # Store the user's email in the session
+            session["is_admin"] = bool(user[2])  # Store the user's admin status in the session
+            if session["is_admin"]:  # If the user is an admin, redirect to the admin page
+                return redirect("/admin")
+            return redirect("/")  # Otherwise, redirect to the home page
+        else:
+            print("Password mismatch")  # Debug statement
     else:
-        flash("Invalid email or password")  # Display an error message if authentication fails
-        return redirect("/login")  # Redirect to the login page
+        print("User not found")  # Debug statement
+
+    flash("Invalid email or password", "error")  # Display an error message if authentication fails
+    return redirect("/login")  # Redirect to the login page
 
 # Function to clear the user session to log out the user
 def logout():

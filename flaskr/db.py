@@ -4,16 +4,15 @@
 # Date: 28 November 2024
 # Notes: Implements database schema creation and user management functions.
 
-import datetime
 # Import the sqlite3 module for database operations
 import sqlite3
 # Import the generate_password_hash function from werkzeug.security for password hashing
 from werkzeug.security import generate_password_hash
 
-# Function to set up the database by creating necessary tables
+# Function to set up the database by creating necessary tables and adding an admin account
 def setup_db():
     """
-    Set up the database by creating necessary tables.
+    Set up the database by creating necessary tables and adding an admin account.
 
     Returns:
         None
@@ -73,6 +72,7 @@ def setup_db():
             FOREIGN KEY (activity3_id) REFERENCES activities(activity_id)
         )
     ''')
+    
     # Create the 'support' table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS support (
@@ -84,84 +84,13 @@ def setup_db():
         )
     ''')
 
-    # Check if admin user exists
-    cursor.execute('SELECT * FROM users WHERE is_admin = 1')
-    admin_exists = cursor.fetchone()
-    if not admin_exists:
-        # Insert default admin user
-        hashed_password = generate_password_hash('SecurePassword')  
-        cursor.execute('''
-            INSERT INTO users (email, password, first_name, last_name, is_admin)
-            VALUES (?, ?, ?, ?, ?)
-        ''', ('admin@codeclub.com', hashed_password, 'Admin', 'User', True))
-
-    # Insert test data into users table
-    test_users = [
-        ('a@a.co.fortei', 'fortnite', 'John', 'Doe', True),
-        ('jane.smith@example.com', 'securepass', 'Jane', 'Smith', False),
-        ('test@example.com', 'hashed_password', 'Test', 'User', False)
-    ]
-    for email, password, first_name, last_name, is_admin in test_users:
-        hashed_password = generate_password_hash(password)
-        cursor.execute('''
-            INSERT OR IGNORE INTO users (email, password, first_name, last_name, is_admin)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (email, hashed_password, first_name, last_name, is_admin))
-
-    # Insert test data into participants table
-    cursor.executemany('''
-        INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)
-    ''', [
-        (2, 'John Doe', 14),
-        (3, 'Jane Smith', 12)
-    ])
-
-    # Insert test data into activities table
-    cursor.executemany('''
-        INSERT INTO activities (activity_name) VALUES (?)
-    ''', [
-        ('Coding Basics',),
-        ('Advanced Python',),
-        ('Robotics',)
-    ])
-
-    # Insert test data into bookings table
-    cursor.executemany('''
-        INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activity3_id, overflow_count)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', [
-        (1, 2, 1, 2, 3, 1),
-        (1, 2, 1, 2, 3, 2),
-        (2, 2, None, None, None, None)
-    ])
-
-    # Insert sample support tickets
-    cursor.executemany('''
-        INSERT INTO support (user_id, support) VALUES (?, ?)
-    ''', [
-        (1, 'Need help with activity booking system'),
-        (1, 'How do I update my participant information?'),
-        (1, 'Cannot access my account settings'),
-        (1, 'Request for activity schedule change'),
-        (1, 'Technical issue with registration form')
-    ])
-
-    # Insert support tickets with specific timestamps
-    cursor.executemany('''
-        INSERT INTO support (user_id, support, created_at) VALUES (?, ?, ?)
-    ''', [
-        (1, 'Urgent support needed', datetime.datetime.now() - datetime.timedelta(days=2)),
-        (1, 'Follow-up question', datetime.datetime.now() - datetime.timedelta(days=1)),
-        (1, 'Issue resolved', datetime.datetime.now())
-    ])
-
-    # Update existing users to use pbkdf2:sha256
-    cursor.execute('SELECT user_id, password FROM users')
-    users = cursor.fetchall()
-    for user_id, password in users:
-        if password.startswith('scrypt:'):
-            new_password = generate_password_hash(password, method='pbkdf2:sha256')
-            cursor.execute('UPDATE users SET password = ? WHERE user_id = ?', (new_password, user_id))
+    # Add an admin account if it doesn't exist
+    admin_email = 'admin@codeclub.com'
+    admin_password = generate_password_hash('adminpass')
+    cursor.execute('''
+        INSERT OR IGNORE INTO users (email, password, first_name, last_name, is_admin)
+        VALUES (?, ?, 'Admin', 'User', TRUE)
+    ''', (admin_email, admin_password))
 
     # Commit the changes to the database
     conn.commit()

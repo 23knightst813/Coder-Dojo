@@ -22,17 +22,8 @@ INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activ
 (2, 2, NULL, NULL);
 
 
--- Insert test user if not exists
-INSERT OR IGNORE INTO users (user_id, email, password, first_name, last_name, is_admin) 
-VALUES (3, 'test@example.com', 'hashed_password', 'Test', 'User', 1);
 
--- Insert sample support tickets
-INSERT INTO support (user_id, support) VALUES 
-(1, 'Need help with activity booking system'),
-(1, 'How do I update my participant information?'),
-(1, 'Cannot access my account settings'),
-(1, 'Request for activity schedule change'),
-(1, 'Technical issue with registration form');
+
 
 -- Insert with specific timestamps for testing
 INSERT INTO support (user_id, support, created_at) VALUES 
