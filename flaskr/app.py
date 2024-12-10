@@ -757,8 +757,7 @@ def download():
         download_name='your_file_name.ext',
         as_attachment=True
     )
-
-# Main entry point of the application
+    # Main entry point of the application
 if __name__ == '__main__':
-    setup_db()
-    app.run(debug=True)
+        setup_db()
+        app.run(debug=True, host='0.0.0.0', port=5000)
