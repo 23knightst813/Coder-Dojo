@@ -4,6 +4,7 @@
 # Date: 28 November 2024
 # Notes: Implements database schema creation and user management functions.
 
+import datetime
 # Import the sqlite3 module for database operations
 import sqlite3
 # Import the generate_password_hash function from werkzeug.security for password hashing
