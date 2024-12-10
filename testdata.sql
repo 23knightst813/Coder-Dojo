@@ -22,7 +22,6 @@ INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activ
 (2, 2, NULL, NULL);
 
 
-
 -- Insert test user if not exists
 INSERT OR IGNORE INTO users (user_id, email, password, first_name, last_name, is_admin) 
 VALUES (3, 'test@example.com', 'hashed_password', 'Test', 'User', 1);

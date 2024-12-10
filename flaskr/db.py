@@ -82,6 +82,78 @@ def setup_db():
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         )
     ''')
+
+    # Check if admin user exists
+    cursor.execute('SELECT * FROM users WHERE is_admin = 1')
+    admin_exists = cursor.fetchone()
+    if not admin_exists:
+        # Insert default admin user
+        hashed_password = generate_password_hash('SecurePassword')  
+        cursor.execute('''
+            INSERT INTO users (email, password, first_name, last_name, is_admin)
+            VALUES (?, ?, ?, ?, ?)
+        ''', ('admin@codeclub.com', hashed_password, 'Admin', 'User', True))
+
+    # Insert test data into users table
+    test_users = [
+        ('a@a.co.fortei', 'fortnite', 'John', 'Doe', True),
+        ('jane.smith@example.com', 'securepass', 'Jane', 'Smith', False),
+        ('test@example.com', 'hashed_password', 'Test', 'User', False)
+    ]
+    for email, password, first_name, last_name, is_admin in test_users:
+        hashed_password = generate_password_hash(password)
+        cursor.execute('''
+            INSERT OR IGNORE INTO users (email, password, first_name, last_name, is_admin)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (email, hashed_password, first_name, last_name, is_admin))
+
+    # Insert test data into participants table
+    cursor.executemany('''
+        INSERT INTO participants (user_id, name, age) VALUES (?, ?, ?)
+    ''', [
+        (2, 'John Doe', 14),
+        (3, 'Jane Smith', 12)
+    ])
+
+    # Insert test data into activities table
+    cursor.executemany('''
+        INSERT INTO activities (activity_name) VALUES (?)
+    ''', [
+        ('Coding Basics',),
+        ('Advanced Python',),
+        ('Robotics',)
+    ])
+
+    # Insert test data into bookings table
+    cursor.executemany('''
+        INSERT INTO bookings (participant_id, user_id, activity1_id, activity2_id, activity3_id, overflow_count)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', [
+        (1, 2, 1, 2, 3, 1),
+        (1, 2, 1, 2, 3, 2),
+        (2, 2, None, None, None, None)
+    ])
+
+    # Insert sample support tickets
+    cursor.executemany('''
+        INSERT INTO support (user_id, support) VALUES (?, ?)
+    ''', [
+        (1, 'Need help with activity booking system'),
+        (1, 'How do I update my participant information?'),
+        (1, 'Cannot access my account settings'),
+        (1, 'Request for activity schedule change'),
+        (1, 'Technical issue with registration form')
+    ])
+
+    # Insert support tickets with specific timestamps
+    cursor.executemany('''
+        INSERT INTO support (user_id, support, created_at) VALUES (?, ?, ?)
+    ''', [
+        (1, 'Urgent support needed', datetime.datetime.now() - datetime.timedelta(days=2)),
+        (1, 'Follow-up question', datetime.datetime.now() - datetime.timedelta(days=1)),
+        (1, 'Issue resolved', datetime.datetime.now())
+    ])
+
     # Commit the changes to the database
     conn.commit()
     # Close the database connection
