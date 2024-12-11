@@ -86,7 +86,7 @@ def setup_db():
 
     # Add an admin account if it doesn't exist
     admin_email = 'admin@codeclub.com'
-    admin_password = generate_password_hash('adminpass')
+    admin_password = generate_password_hash('adminpass' )
     cursor.execute('''
         INSERT OR IGNORE INTO users (email, password, first_name, last_name, is_admin)
         VALUES (?, ?, 'Admin', 'User', TRUE)
