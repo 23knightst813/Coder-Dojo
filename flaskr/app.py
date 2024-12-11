@@ -9,15 +9,18 @@ import shutil
 from datetime import datetime
 import csv
 import logging
+from dotenv import load_dotenv
 
 # Import custom validation functions and database functions
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
 
+# Load environment variables from .env file
+load_dotenv()
 # Initialize the Flask application
 app = Flask(__name__)
-app.secret_key = 'RaheeshSucks'  # Secret key for session management
+app.secret_key = os.getenv('secret_key')  # Secret key for session management
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -767,7 +770,12 @@ def download():
         download_name='your_file_name.ext',
         as_attachment=True
     )
-    # Main entry point of the application
+
+# Main entry point of the application
 if __name__ == '__main__':
-        setup_db()
+    setup_db()
+    if os.getenv('FLASK_ENV') == 'development':
         app.run(debug=True, host='0.0.0.0', port=5000)
+    else:
+        from gunicorn.app.wsgiapp import run
+        run()
