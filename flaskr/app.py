@@ -502,6 +502,32 @@ def edit_session(booking_id):
     conn.close()
     return render_template('edit_session.html', session_data=session_data, participants=participants, activities=activities)
 
+@app.route("/admin/force_accept/<int:booking_id>", methods=["POST"])
+def force_accept_booking(booking_id):
+    if not session.get('is_admin'):
+        flash('Admin access required', 'error')
+        return redirect(url_for('home'))
+        
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # Update the booking's overflow_count to 0
+        cursor.execute('''
+            UPDATE bookings 
+            SET overflow_count = 0 
+            WHERE booking_id = ?
+        ''', (booking_id,))
+        conn.commit()
+        flash('Participant has been force accepted', 'success')
+    except Exception as e:
+        flash('Error processing request', 'error')
+        logging.error(f"Error force accepting booking: {e}")
+    finally:
+        conn.close()
+    
+    return redirect(url_for('admin'))
+
+
 # Define the delete_session route
 @app.route('/admin/delete_session/<int:booking_id>', methods=['POST'])
 def delete_session(booking_id):

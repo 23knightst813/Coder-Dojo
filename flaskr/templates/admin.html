@@ -35,10 +35,12 @@
             </ul>
             <p><strong>date:</strong> {{ session[6] }}</p>
             <p><strong>waiting list position:</strong> {{ session[7] }}</p>
-            <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}">
-              <button type="submit" class="btn">delete</button>
-            </form>
-            <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+            <div class="button-group">
+              <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}" style="display: inline;">
+                <button type="submit" class="btn">delete</button>
+              </form>
+              <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -72,10 +74,15 @@
             </ul>
             <p><strong>date:</strong> {{ session[6] }}</p>
             <p><strong>waiting list position:</strong> {{ session[7] }}</p>
-            <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}">
-              <button type="submit" class="btn">delete</button>
-            </form>
-            <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+            <div class="button-group">
+              <form method="post" action="{{ url_for('delete_session', booking_id=session[0]) }}" style="display: inline;">
+                <button type="submit" class="btn">delete</button>
+              </form>
+              <form method="post" action="{{ url_for('force_accept_booking', booking_id=session[0]) }}" style="display: inline;">
+                <button type="submit" class="btn">accept</button>
+              </form>
+              <a href="{{ url_for('edit_session', booking_id=session[0]) }}" class="btn">edit</a>
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -148,5 +155,34 @@
     <button type="submit" class="btn">status</button>
   </form>
 </div>
+
+<style>
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .btn {
+    min-width: 80px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+
+  .btn:hover {
+    background-color: #e0e0e0;
+  }
+
+
+</style>
 
 {% endblock %}
