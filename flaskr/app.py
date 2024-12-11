@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
+from test_data import populate_test_data
 
 # Load environment variables from .env file
 load_dotenv()
@@ -778,7 +779,25 @@ def download():
         as_attachment=True
     )
 
+
 # Main entry point of the application
 if __name__ == '__main__':
-    setup_db()
+    setup_db()  # This creates tables and admin user
+    
+    # Check if we need to populate test data
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM users')
+        user_count = cursor.fetchone()[0]
+        conn.close()
+        
+        if user_count == 1:  # Only admin user exists
+            try:
+                populate_test_data()
+            except Exception as e:
+                logging.error(f"An error occurred while populating test data: {e}")
+    except Exception as e:
+        logging.error(f"An error occurred while checking user count: {e}")
+        
     app.run(debug=True, host='0.0.0.0', port=5000)

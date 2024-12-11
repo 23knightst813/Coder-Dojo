@@ -6,6 +6,15 @@
 from werkzeug.security import generate_password_hash
 import sqlite3
 
+def get_db_connection():
+    """
+    Get a connection to the SQLite database 'dojo.db'.
+
+    Returns:
+        sqlite3.Connection: SQLite connection object
+    """
+    return sqlite3.connect('dojo.db')
+
 def populate_test_data():
     """
     Populate the database with test data for sessions to test overflow functionality.
@@ -13,10 +22,14 @@ def populate_test_data():
     Returns:
         None
     """
-    # Connect to the SQLite database 'dojo.db'
-    conn = sqlite3.connect('dojo.db')
-    # Create a cursor object to interact with the database
+    conn = get_db_connection()
     cursor = conn.cursor()
+
+    # Insert test users, ignore if email already exists
+    cursor.execute('''INSERT OR IGNORE INTO users 
+                     (email, password, first_name, last_name) 
+                     VALUES (?, ?, ?, ?)''',
+                     ('test@example.com', 'hashedpass', 'Test', 'User'))
 
     # Insert test data into the 'activities' table
     activities = [

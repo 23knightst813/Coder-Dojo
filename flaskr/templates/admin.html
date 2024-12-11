@@ -113,9 +113,12 @@
   <p class="head">add new activity</p>
   <form method="post" action="{{ url_for('add_activity') }}">
     <label for="activity_name">activity name:</label>
-
-    <div style="text-align: center;"></div>
-    <button type="submit" class="btn">add activity</button>
+    <!-- Add this input field -->
+    <input type="text" id="activity_name" name="activity_name" required>
+    
+    <div style="text-align: center;">
+      <button type="submit" class="btn">add activity</button>
+    </div>
   </form>
 
   <!-- Section for displaying existing activities -->
