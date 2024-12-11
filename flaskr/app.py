@@ -723,6 +723,12 @@ def request_entity_too_large(e):
     flash('Request entity too large', 'error')
     return redirect("/")
 
+@app.errorhandler(Exception)
+def handle_exception(e):
+    logging.error(f"An error occurred: {e}")
+    flash('An unexpected error occurred. Please try again later.', 'error')
+    return redirect(url_for('home'))
+
 # Define the status route for admin
 @app.route('/status', methods=['POST'])
 def status():
@@ -774,8 +780,4 @@ def download():
 # Main entry point of the application
 if __name__ == '__main__':
     setup_db()
-    if os.getenv('FLASK_ENV') == 'development':
-        app.run(debug=True, host='0.0.0.0', port=5000)
-    else:
-        from gunicorn.app.wsgiapp import run
-        run()
+    app.run(debug=True, host='0.0.0.0', port=5000)
