@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 from validation import is_not_empty, is_valid_email, is_within_length, is_secure_password
 from db import setup_db, add_user, get_user_id_by_email, get_db_connection
 from auth import sign_in, logout
+from test_data import populate_test_data
 
 # Load environment variables from .env file
 load_dotenv()
@@ -781,4 +782,6 @@ def download():
 # Main entry point of the application
 if __name__ == '__main__':
     setup_db()
+    populate_test_data()
     app.run(debug=True, host='0.0.0.0', port=5000)
+sss
