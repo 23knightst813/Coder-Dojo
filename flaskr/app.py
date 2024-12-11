@@ -20,7 +20,8 @@ from auth import sign_in, logout
 load_dotenv()
 # Initialize the Flask application
 app = Flask(__name__)
-app.secret_key = os.getenv('secret_key')  # Secret key for session management
+app.secret_key = os.getenv('SECRET_KEY')  # Secret key for session management
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
