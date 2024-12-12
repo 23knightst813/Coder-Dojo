@@ -9,6 +9,7 @@ import shutil
 from datetime import datetime
 import csv
 import logging
+#Access to the enviroment varibles
 from dotenv import load_dotenv
 
 # Import custom validation functions and database functions
