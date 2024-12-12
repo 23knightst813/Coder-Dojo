@@ -35,15 +35,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```  
 
-### Set Up the Database  
-Run the database setup script:  
-```bash
-python db.py
-```  
-
 ### Run the Application  
 ```bash
-flask run
+python app.py
 ```  
 
 ### Access the Application  
