@@ -12,8 +12,10 @@
 <h1 class="head">edit profile</h1>
 
 <!-- User Information Form -->
-<form method="post" action="{{ url_for('edit_profile') }}" class="form-container">
+<form method="post" action="{{ url_for('edit_profile', user_id=user_info[0]) }}" class="form-container">
     <h2 class="head">user information</h2>
+    <!-- Hidden input field for user ID -->
+    <input type="hidden" name="user_id" value="{{ user_info[0] }}">
     <!-- First name input field -->
     <label for="first_name">first name:</label>
     <input type="text" name="first_name" value="{{ user_info[1] }}" required>
