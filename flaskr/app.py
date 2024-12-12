@@ -275,12 +275,28 @@ def edit_profile():
         new_last_name = request.form['last_name']
         new_password = request.form['password']
 
-        # Check for empty fields
-        if not all([new_email, new_first_name, new_last_name]):
-            return bad_request("All fields are required")
+        # Validate form inputs
+        if not all([is_not_empty(new_email), is_not_empty(new_first_name), is_not_empty(new_last_name)]):
+            flash("All fields are required", "error")
+            logging.error("Validation error: All fields are required")
+            return redirect(url_for('edit_profile'))
+
+        if not is_valid_email(new_email):
+            flash("Invalid email address", "error")
+            logging.error("Validation error: Invalid email address")
+            return redirect(url_for('edit_profile'))
+
+        if not is_within_length(new_first_name, 50) or not is_within_length(new_last_name, 50):
+            flash("First name and last name must be 50 characters or less", "error")
+            logging.error("Validation error: First name and last name must be 50 characters or less")
+            return redirect(url_for('edit_profile'))
 
         # Hash the new password if provided
         if new_password:
+            if not is_secure_password(new_password):
+                flash("Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.", "error")
+                logging.error("Validation error: Password does not meet security criteria")
+                return redirect(url_for('edit_profile'))
             hashed_password = generate_password_hash(new_password)
             cursor.execute('UPDATE users SET email = ?, first_name = ?, last_name = ?, password = ? WHERE user_id = ?',
                            (new_email, new_first_name, new_last_name, hashed_password, user_id))
@@ -293,6 +309,8 @@ def edit_profile():
         user_data = cursor.fetchone()
         conn.close()
 
+        flash("Profile updated successfully!", "success")
+        logging.info("Profile updated successfully")
         return redirect(url_for('home'))
 
     # For GET request, fetch the current user data to pre-fill the form
