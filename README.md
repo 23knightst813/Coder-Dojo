@@ -9,7 +9,10 @@ This web application is designed for a coding club to manage user registrations,
 ### Clone the Repository  
 ```bash
 git clone https://github.com/23knightst813/Coder-Dojo.git
-cd flasky
+```  
+### Enter the directory
+```  
+cd flaskyy
 ```  
 
 ### Create a Virtual Environment  
