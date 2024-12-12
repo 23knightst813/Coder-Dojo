@@ -274,6 +274,10 @@ def edit_profile():
         new_last_name = request.form['last_name']
         new_password = request.form['password']
 
+        # Check for empty fields
+        if not all([new_email, new_first_name, new_last_name]):
+            return bad_request("All fields are required")
+
         # Hash the new password if provided
         if new_password:
             hashed_password = generate_password_hash(new_password)
@@ -288,7 +292,7 @@ def edit_profile():
         user_data = cursor.fetchone()
         conn.close()
 
-        return render_template('edit_profile.html', user_info=user_data)
+        return redirect(url_for('home'))
 
     # For GET request, fetch the current user data to pre-fill the form
     cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
