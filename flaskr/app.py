@@ -270,60 +270,41 @@ def edit_profile():
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        new_email = request.form['email']
-        new_first_name = request.form['first_name']
-        new_last_name = request.form['last_name']
-        new_password = request.form['password']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        password = request.form['password']
 
-        # Validate form inputs
-        if not all([is_not_empty(new_email), is_not_empty(new_first_name), is_not_empty(new_last_name)]):
-            flash("All fields are required", "error")
-            logging.error("Validation error: All fields are required")
-            return redirect(url_for('edit_profile'))
+        # Update user's first name and last name
+        cursor.execute('''
+            UPDATE users
+            SET first_name = ?, last_name = ?
+            WHERE user_id = ?
+        ''', (first_name, last_name, user_id))
 
-        if not is_valid_email(new_email):
-            flash("Invalid email address", "error")
-            logging.error("Validation error: Invalid email address")
-            return redirect(url_for('edit_profile'))
-
-        if not is_within_length(new_first_name, 50) or not is_within_length(new_last_name, 50):
-            flash("First name and last name must be 50 characters or less", "error")
-            logging.error("Validation error: First name and last name must be 50 characters or less")
-            return redirect(url_for('edit_profile'))
-
-        # Hash the new password if provided
-        if new_password:
-            if not is_secure_password(new_password):
-                flash("Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character.", "error")
-                logging.error("Validation error: Password does not meet security criteria")
-                return redirect(url_for('edit_profile'))
-            hashed_password = generate_password_hash(new_password)
-            cursor.execute('UPDATE users SET email = ?, first_name = ?, last_name = ?, password = ? WHERE user_id = ?',
-                           (new_email, new_first_name, new_last_name, hashed_password, user_id))
-        else:
-            cursor.execute('UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE user_id = ?',
-                           (new_email, new_first_name, new_last_name, user_id))
+        # If a new password is provided, update it
+        if password:
+            hashed_password = generate_password_hash(password)
+            cursor.execute('''
+                UPDATE users
+                SET password = ?
+                WHERE user_id = ?
+            ''', (hashed_password, user_id))
 
         conn.commit()
-        cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
-        user_data = cursor.fetchone()
+        flash('Profile updated successfully!', 'success')
         conn.close()
+        return redirect(url_for('edit_profile'))
 
-        flash("Profile updated successfully!", "success")
-        logging.info("Profile updated successfully")
-        return redirect(url_for('home'))
+    # Fetch user information
+    cursor.execute('SELECT user_id, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
+    user_info = cursor.fetchone()
 
-    # For GET request, fetch the current user data to pre-fill the form
-    cursor.execute('SELECT email, first_name, last_name FROM users WHERE user_id = ?', (user_id,))
-    user_data = cursor.fetchone()
-
-    # Fetch participants for the user
+    # Fetch user's participants
     cursor.execute('SELECT participant_id, name, age FROM participants WHERE user_id = ?', (user_id,))
-    participants = cursor.fetchall()
+    participant_info = cursor.fetchall()
 
     conn.close()
-
-    return render_template('edit_profile.html', user_info=user_data, participant_info=participants)
+    return render_template('edit_profile.html', user_info=user_info, participant_info=participant_info)
 
 # Define the sessions route
 @app.route('/sessions')
